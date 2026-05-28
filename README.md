@@ -1,5 +1,9 @@
 # szl-mesh — UDS bundle (A11oy + Sentra + Amaru + Runtime Layer)
 
+[![Concept DOI](https://img.shields.io/badge/concept%20DOI-10.5281%2Fzenodo.19944926-01696F?style=flat-square&logo=doi&logoColor=white)](https://doi.org/10.5281/zenodo.19944926)
+[![v16 DOI](https://img.shields.io/badge/v16%20DOI-10.5281%2Fzenodo.20424996-805AD5?style=flat-square&logo=doi&logoColor=white)](https://doi.org/10.5281/zenodo.20424996)
+[![License](https://img.shields.io/badge/license-Apache%202.0-2DA44E?style=flat-square)](./LICENSE)
+
 ## Bundle Versions
 
 | Version | Manifest | Packages | Status |
