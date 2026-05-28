@@ -9,6 +9,15 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-2DA44E?style=flat-square)](./LICENSE)
 [![Doctrine v6](https://img.shields.io/badge/doctrine-v6-01696F?style=flat-square)](https://github.com/szl-holdings/ouroboros-thesis)
 
+
+> **Frontier Capability** — first topology-preserving (A15 persistent homology) multi-component governance span schema.  
+> The A15 ELZ invariant guarantees that no topological obstruction can sever the audit-fiber bundle across component boundaries under Doctrine v6 composition.
+
+> **Thesis cross-reference:** The mathematical foundations for this repository are developed
+> in the [Ouroboros Thesis v18.0](https://github.com/szl-holdings/ouroboros-thesis) (DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)).
+> Source for the published thesis is in [`/home/user/workspace/szl/thesis_v18/`](/home/user/workspace/szl/thesis_v18/).
+> Concept DOI (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
+
 ## Graph-Theoretic Foundation
 
 The UDS mesh is a directed acyclic graph (DAG) of typed spans. The topology satisfies:
