@@ -1,5 +1,8 @@
 name: CI
 
+# Series-A quality gate — Doctrine v6
+# Validates governance files, bundle manifests, and OTEL span schemas.
+
 on:
   workflow_dispatch:
   pull_request:
@@ -10,14 +13,21 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   docs-check:
     name: Docs & Governance Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+        with:
+          persist-credentials: false
       - name: Verify required governance files
         run: |
           for f in README.md LICENSE SECURITY.md CODE_OF_CONDUCT.md CONTRIBUTING.md CITATION.cff; do
