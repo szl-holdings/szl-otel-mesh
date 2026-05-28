@@ -1,19 +1,11 @@
-cff-version: 1.2.0
-message: "If you use this software or research, please cite it as below."
-authors:
-  - family-names: "Lutar"
-    given-names: "Stephen P."
-    name-suffix: "Jr."
-    email: "stephen@szlholdings.com"
-    orcid: "https://orcid.org/0009-0001-0110-4173"
-    affiliation: "SZL Holdings"
-title: "uds-mesh"
-version: "uds-v0.2.0"
-date-released: "2026-05-28"
-url: "https://github.com/szl-holdings/uds-mesh"
-repository-code: "https://github.com/szl-holdings/uds-mesh"
+
 identifiers:
-  - type: doi
+  - description: "Ouroboros Thesis v18.0 — Multi-track Substrate Expansion (Zenodo)"
+    type: doi
+    value: "10.5281/zenodo.20434276"
+  - description: "Ouroboros Thesis concept DOI — always-latest"
+    type: doi
     value: "10.5281/zenodo.19944926"
-    description: "Concept DOI for the Ouroboros Thesis stack"
-license: "Apache-2.0"
+  - description: "ORCID iD of the principal author"
+    type: other
+    value: "https://orcid.org/0009-0001-0110-4173"
