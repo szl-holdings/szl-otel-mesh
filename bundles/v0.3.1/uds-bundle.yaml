@@ -1,0 +1,293 @@
+# uds-bundle-v0.3.1.yaml
+# UDS Bundle manifest for SZL Runtime Layer
+# Adds three new packages: composition-runtime, scitt-adapter, policy-gate
+#
+# UDS Bundle specification: https://uds.defenseunicorns.com/docs/bundle/
+# Doctrine v6 §12 "Deployment Manifest" constraint.
+
+kind: UDSBundle
+metadata:
+  name: szl-runtime-layer
+  version: 0.3.1
+  description: >
+    SZL Runtime Layer bundle — Doctrine v6 policy composition, SCITT-Rekor
+    notarisation, vertical policy gate, A15 persistent homology, xoshiro256**
+    PRNG, and K10_v2 replay root.
+  authors:
+    - SZL Platform Team
+  architecture: amd64
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Packages
+# ─────────────────────────────────────────────────────────────────────────────
+
+packages:
+
+  # ── A. Composition Runtime (R1) ────────────────────────────────────────────
+  - name: composition-runtime
+    repository: ghcr.io/szl/packages/composition-runtime
+    ref: 0.3.1
+    description: >
+      Doctrine v6 geometric-mean / min-Λ policy composition with deterministic
+      interleave and cosignature preservation.
+    components:
+      - name: doctrine-composer
+        description: DoctrineComposer service + Prometheus /metrics endpoint
+        required: true
+        files:
+          - source: runtime/composer/doctrine_composer.ts
+            target: /app/runtime/composer/doctrine_composer.ts
+          - source: runtime/composer/prometheus-exporter.ts
+            target: /app/runtime/composer/prometheus-exporter.ts
+        images:
+          - ghcr.io/szl/composition-runtime:0.3.1
+        deploy:
+          helm:
+            chart: szl-composition-runtime
+            version: 0.3.1
+            namespace: szl-runtime
+            valuesFiles:
+              - values/composition-runtime.yaml
+        healthChecks:
+          - kind: Deployment
+            name: composition-runtime
+            namespace: szl-runtime
+        expose:
+          - name: metrics
+            service: composition-runtime-metrics
+            port: 9090
+            path: /metrics
+            gateway: admin
+
+  # ── B. SCITT-Rekor Adapter (R2) ────────────────────────────────────────────
+  - name: scitt-adapter
+    repository: ghcr.io/szl/packages/scitt-adapter
+    ref: 0.3.1
+    description: >
+      IETF draft-ietf-scitt-architecture-07 envelope construction + Rekor
+      submission adapter.  Includes DPI chain verifier and B=7 Merkle DAG.
+    optionalComponents:
+      - dpi-chain-verifier
+    components:
+      - name: scitt-adapter-core
+        description: ScittAdapter service + Rekor submission
+        required: true
+        files:
+          - source: runtime/scitt/scitt_adapter.ts
+            target: /app/runtime/scitt/scitt_adapter.ts
+          - source: runtime/scitt/merkle_dag_b7.ts
+            target: /app/runtime/scitt/merkle_dag_b7.ts
+        images:
+          - ghcr.io/szl/scitt-adapter:0.3.1
+        deploy:
+          helm:
+            chart: szl-scitt-adapter
+            version: 0.3.1
+            namespace: szl-runtime
+            valuesFiles:
+              - values/scitt-adapter.yaml
+        healthChecks:
+          - kind: Deployment
+            name: scitt-adapter
+            namespace: szl-runtime
+        expose:
+          - name: api
+            service: scitt-adapter-api
+            port: 8080
+            path: /api/v1/notarise
+            gateway: tenant
+      - name: dpi-chain-verifier
+        description: Runtime DPI bound check + Merkle inclusion proof verifier
+        required: false
+        files:
+          - source: runtime/scitt/dpi_chain_verifier.ts
+            target: /app/runtime/scitt/dpi_chain_verifier.ts
+        deploy:
+          helm:
+            chart: szl-dpi-verifier
+            version: 0.3.1
+            namespace: szl-runtime
+            valuesFiles:
+              - values/dpi-verifier.yaml
+
+  # ── C. Policy Gate (R3) ─────────────────────────────────────────────────────
+  - name: policy-gate
+    repository: ghcr.io/szl/packages/policy-gate
+    ref: 0.3.1
+    description: >
+      Doctrine v6 vertical policy runtime gate with NATS hot-reload event bus
+      and accessible React admin UI at /policy.
+    components:
+      - name: policy-gate-core
+        description: PolicyGate + PolicyEventBus (NATS hot-reload)
+        required: true
+        files:
+          - source: runtime/policy/policy_gate.ts
+            target: /app/runtime/policy/policy_gate.ts
+          - source: runtime/policy/policy_event_bus.ts
+            target: /app/runtime/policy/policy_event_bus.ts
+        images:
+          - ghcr.io/szl/policy-gate:0.3.1
+        deploy:
+          helm:
+            chart: szl-policy-gate
+            version: 0.3.1
+            namespace: szl-runtime
+            valuesFiles:
+              - values/policy-gate.yaml
+        healthChecks:
+          - kind: Deployment
+            name: policy-gate
+            namespace: szl-runtime
+          - kind: StatefulSet
+            name: nats
+            namespace: szl-runtime
+        expose:
+          - name: api
+            service: policy-gate-api
+            port: 8080
+            path: /api/v1/evaluate
+            gateway: tenant
+          - name: admin-ui
+            service: policy-gate-ui
+            port: 3000
+            path: /policy
+            gateway: admin
+          - name: metrics
+            service: policy-gate-metrics
+            port: 9090
+            path: /metrics
+            gateway: admin
+      - name: policy-admin-ui
+        description: Accessible React admin UI for /policy page (WCAG 2.1 AA)
+        required: true
+        files:
+          - source: runtime/policy/policy_admin_ui.tsx
+            target: /app/runtime/policy/policy_admin_ui.tsx
+
+  # ── D. A15 Persistent Homology (R4) ─────────────────────────────────────────
+  - name: a15-homology
+    repository: ghcr.io/szl/packages/a15-homology
+    ref: 0.3.1
+    description: >
+      A15 persistent homology runtime — H_0 connectivity check (ELZ 2002)
+      with Prometheus metrics.
+    components:
+      - name: a15-checker
+        description: PersistentHomologyChecker service
+        required: true
+        files:
+          - source: runtime/a15/persistent_homology_check.ts
+            target: /app/runtime/a15/persistent_homology_check.ts
+          - source: runtime/a15/a15_metrics.ts
+            target: /app/runtime/a15/a15_metrics.ts
+        images:
+          - ghcr.io/szl/a15-homology:0.3.1
+        deploy:
+          helm:
+            chart: szl-a15-homology
+            version: 0.3.1
+            namespace: szl-runtime
+            valuesFiles:
+              - values/a15-homology.yaml
+        healthChecks:
+          - kind: Deployment
+            name: a15-homology
+            namespace: szl-runtime
+        expose:
+          - name: metrics
+            service: a15-homology-metrics
+            port: 9090
+            path: /metrics
+            gateway: admin
+
+  # ── E. xoshiro256** PRNG (R5) ───────────────────────────────────────────────
+  - name: xoshiro-prng
+    repository: ghcr.io/szl/packages/xoshiro-prng
+    ref: 0.3.1
+    description: >
+      xoshiro256** PRNG library (Blackman & Vigna 2021, doi:10.1145/3460772).
+      Shared library; no separate deployment.
+    components:
+      - name: prng-lib
+        description: xoshiro256** TypeScript library
+        required: true
+        files:
+          - source: runtime/prng/xoshiro256ss.ts
+            target: /app/runtime/prng/xoshiro256ss.ts
+          - source: runtime/prng/xoshiro_migration.md
+            target: /docs/xoshiro_migration.md
+
+  # ── F. K10_v2 Replay Root (R6) ──────────────────────────────────────────────
+  - name: k10v2-replay
+    repository: ghcr.io/szl/packages/k10v2-replay
+    ref: 0.3.1
+    description: >
+      K10_v2 event-sourcing replay root with Lamport clock ordering and
+      snapshot fast-forward.
+    components:
+      - name: k10v2-core
+        description: K10ReplayRoot service
+        required: true
+        files:
+          - source: runtime/k10/k10v2_replay_root.ts
+            target: /app/runtime/k10/k10v2_replay_root.ts
+          - source: runtime/k10/k10v2_protocol.md
+            target: /docs/k10v2_protocol.md
+        images:
+          - ghcr.io/szl/k10v2-replay:0.3.1
+        deploy:
+          helm:
+            chart: szl-k10v2-replay
+            version: 0.3.1
+            namespace: szl-runtime
+            valuesFiles:
+              - values/k10v2-replay.yaml
+        healthChecks:
+          - kind: Deployment
+            name: k10v2-replay
+            namespace: szl-runtime
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Shared configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+sharedConfig:
+  namespace: szl-runtime
+  doctrineVersion: "6"
+  prometheusPort: 9090
+  natsUrl: "nats://nats.szl-runtime.svc.cluster.local:4222"
+  rekorUrl: "https://rekor.sigstore.dev"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Bundle-level overrides
+# ─────────────────────────────────────────────────────────────────────────────
+
+overrides:
+  composition-runtime:
+    doctrine-composer:
+      variables:
+        - name: LAMBDA_FLOOR
+          description: "Minimum composed Λ (Doctrine v6 §3.2)"
+          default: "0.1"
+        - name: COMPOSITION_MODE
+          description: "geometric_mean | min_lambda"
+          default: "geometric_mean"
+  policy-gate:
+    policy-gate-core:
+      variables:
+        - name: LAMBDA_THRESHOLD
+          description: "Minimum Λ to grant access"
+          default: "0.5"
+        - name: MAX_POLICIES_PER_REQUEST
+          description: "DoS cap on policy evaluation (OWASP)"
+          default: "500"
+  a15-homology:
+    a15-checker:
+      variables:
+        - name: A15_MAX_COMPONENTS
+          description: "Maximum β_0 (Doctrine v6 §9.1)"
+          default: "1"
+        - name: A15_EPSILON
+          description: "Vietoris-Rips filtration threshold"
+          default: "0.3"

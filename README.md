@@ -1,4 +1,29 @@
-# szl-mesh — UDS bundle (A11oy + Sentra + Amaru)
+# szl-mesh — UDS bundle (A11oy + Sentra + Amaru + Runtime Layer)
+
+## Bundle Versions
+
+| Version | Manifest | Packages | Status |
+|---------|----------|----------|--------|
+| v0.2.0 | [`uds-bundle.yaml`](./uds-bundle.yaml) | A11oy, Sentra, Amaru | stable |
+| v0.3.1 | [`bundles/v0.3.1/uds-bundle.yaml`](./bundles/v0.3.1/uds-bundle.yaml) | A11oy, Sentra, Amaru + **Doctrine v6 Runtime Layer** (composition-runtime, scitt-adapter, policy-gate, a15-homology, xoshiro-prng, k10v2-replay) | new |
+
+### v0.3.1 — Doctrine v6 Runtime Layer
+
+Bundle `szl-runtime-layer v0.3.1` adds the Doctrine v6 runtime modules to the mesh:
+
+- **composition-runtime**: geometric-mean / min-Λ policy composition (COSE_Sign1 via [RFC 9052](https://www.rfc-editor.org/rfc/rfc9052), [RFC 8949](https://www.rfc-editor.org/rfc/rfc8949))
+- **scitt-adapter**: SCITT-Rekor notarisation per [draft-ietf-scitt-architecture-07](https://datatracker.ietf.org/doc/draft-ietf-scitt-architecture/) with [RFC 6962](https://www.rfc-editor.org/rfc/rfc6962) Merkle proofs
+- **policy-gate**: Doctrine v6 §4.3 best-match gate + NATS hot-reload
+- **a15-homology**: ELZ 2002 persistent homology A15 invariant ([doi:10.1007/s00454-002-2885-2](https://doi.org/10.1007/s00454-002-2885-2))
+- **xoshiro-prng**: xoshiro256** PRNG ([doi:10.1145/3460772](https://doi.org/10.1145/3460772))
+- **k10v2-replay**: Lamport-clock event-sourcing replay root ([doi:10.1145/359545.359563](https://doi.org/10.1145/359545.359563))
+
+```sh
+# Deploy v0.3.1 runtime layer
+uds-cli bundle deploy bundles/v0.3.1/uds-bundle-szl-runtime-layer-amd64-0.3.1.tar.zst --confirm
+```
+
+---
 
 **Author:** Lutar, Stephen P. · ORCID 0009-0001-0110-4173 · SZL Holdings
 **Plane:** Plane 1 of the mesh plan — see
