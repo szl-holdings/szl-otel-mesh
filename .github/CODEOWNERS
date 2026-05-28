@@ -1,0 +1,31 @@
+# CODEOWNERS
+#
+# SZL Holdings · uds-mesh — Code Ownership Declaration
+# Each line maps a path pattern to its owner(s).
+# Owners are required reviewers for pull requests touching those paths.
+#
+# Syntax: pattern  @owner
+# Reference: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner — all files not matched by a more specific rule
+*  @stephenlutar2-hash
+
+# ── Span schemas ──────────────────────────────────────────────────────────────
+/schemas/  @stephenlutar2-hash
+/schemas/spans/  @stephenlutar2-hash
+
+# ── Bundle definitions ────────────────────────────────────────────────────────
+/bundles/  @stephenlutar2-hash
+uds-bundle.yaml  @stephenlutar2-hash
+uds-mesh-pointer-manifest.yaml  @stephenlutar2-hash
+extended-attestations.jsonl  @stephenlutar2-hash
+
+# ── CI/CD ─────────────────────────────────────────────────────────────────────
+/.github/  @stephenlutar2-hash
+/.github/workflows/  @stephenlutar2-hash
+
+# ── Security-sensitive files ──────────────────────────────────────────────────
+SECURITY.md  @stephenlutar2-hash
+CITATION.cff  @stephenlutar2-hash
+LICENSE  @stephenlutar2-hash
+CODE_OF_CONDUCT.md  @stephenlutar2-hash
