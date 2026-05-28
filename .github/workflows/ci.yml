@@ -33,3 +33,6 @@ jobs:
         run: |
           [ -f "uds-bundle.yaml" ] || { echo "uds-bundle.yaml missing"; exit 1; }
           echo "Bundle manifest present."
+      - name: Validate a11oy.graph.* OTEL span schema (v17.2)
+        run: |
+          bash schemas/spans/test_graph_spans.sh
