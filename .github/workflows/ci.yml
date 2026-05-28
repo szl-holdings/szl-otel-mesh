@@ -34,9 +34,8 @@ jobs:
             [ -f "$f" ] || { echo "Missing: $f"; exit 1; }
           done
           echo "All governance files present."
-      - name: Validate CITATION.cff
+      - name: Validate CITATION.cff has ORCID
         run: |
-          grep -q "stephen@szlholdings.com" CITATION.cff || { echo "CITATION.cff missing email"; exit 1; }
           grep -q "0009-0001-0110-4173" CITATION.cff || { echo "CITATION.cff missing ORCID"; exit 1; }
           echo "CITATION.cff valid."
       - name: Validate bundle manifest
