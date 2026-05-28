@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  docs-check:
+    name: Docs & Governance Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+      - name: Verify required governance files
+        run: |
+          for f in README.md LICENSE SECURITY.md CODE_OF_CONDUCT.md CONTRIBUTING.md CITATION.cff; do
+            [ -f "$f" ] || { echo "Missing: $f"; exit 1; }
+          done
+          echo "All governance files present."
+      - name: Validate CITATION.cff
+        run: |
+          grep -q "stephen@szlholdings.com" CITATION.cff || { echo "CITATION.cff missing email"; exit 1; }
+          grep -q "0009-0001-0110-4173" CITATION.cff || { echo "CITATION.cff missing ORCID"; exit 1; }
+          echo "CITATION.cff valid."
+      - name: Validate bundle manifest
+        run: |
+          [ -f "uds-bundle.yaml" ] || { echo "uds-bundle.yaml missing"; exit 1; }
+          echo "Bundle manifest present."
