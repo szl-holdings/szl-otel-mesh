@@ -1,7 +1,31 @@
-
+cff-version: 1.2.0
+message: "If you use this software, please cite as follows."
+title: "uds-mesh — Unified Data System cross-component span schemas and governance receipts"
+version: "0.2.0"
+date-released: "2026-05-29"
+abstract: >-
+  Cross-component span schemas and governance receipts for OTEL-style
+  observability in the SZL Holdings governed AI platform. Implements
+  graph-theoretic span bundles over the Ouroboros Thesis governance framework.
+type: software
+authors:
+  - family-names: Lutar
+    given-names: "Stephen P."
+    name-suffix: "Jr."
+    affiliation: SZL Holdings
+    orcid: "https://orcid.org/0009-0001-0110-4173"
 license: Apache-2.0
+url: "https://github.com/szl-holdings/uds-mesh"
+repository-code: "https://github.com/szl-holdings/uds-mesh"
+keywords:
+  - szl-holdings
+  - ai-governance
+  - observability
+  - opentelemetry
+  - spans
+  - governance-receipts
 identifiers:
-  - description: "Ouroboros Thesis v18.0 — Multi-track Substrate Expansion (Zenodo)"
+  - description: "Ouroboros Thesis v18.0 — research foundation (Zenodo)"
     type: doi
     value: "10.5281/zenodo.20434276"
   - description: "Ouroboros Thesis concept DOI — always-latest"
