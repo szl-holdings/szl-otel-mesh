@@ -1,4 +1,6 @@
 # uds-mesh
+
+> **Naming clarification.** "UDS" in this repository refers to **Unified Decision Span** — an OpenTelemetry-compatible span schema for governance receipts. This project is **not affiliated with Defense Unicorns' UDS** (Unicorn Delivery Service / [github.com/defenseunicorns](https://github.com/defenseunicorns)). The acronym collision is acknowledged; rename under review pending counsel's trademark search.
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-0B1F3A.svg?style=flat-square&logo=apache&logoColor=00D4FF)](https://www.apache.org/licenses/LICENSE-2.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20434276.svg)](https://doi.org/10.5281/zenodo.20434276)
 [![CI](https://github.com/szl-holdings/uds-mesh/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/ci.yml)
