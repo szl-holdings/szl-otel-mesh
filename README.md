@@ -1,6 +1,5 @@
 # uds-mesh
 
-> **Naming clarification.** "UDS" in this repository refers to **Unified Decision Span** — an OpenTelemetry-compatible span schema for governance receipts. This project is **not affiliated with Defense Unicorns' UDS** (Unicorn Delivery Service / [github.com/defenseunicorns](https://github.com/defenseunicorns)). The acronym collision is acknowledged; rename under review pending counsel's trademark search.
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-0B1F3A.svg?style=flat-square&logo=apache&logoColor=00D4FF)](https://www.apache.org/licenses/LICENSE-2.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20434276.svg)](https://doi.org/10.5281/zenodo.20434276)
 [![CI](https://github.com/szl-holdings/uds-mesh/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/ci.yml)
@@ -9,6 +8,7 @@
 [![SBOM](https://github.com/szl-holdings/uds-mesh/actions/workflows/sbom.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/sbom.yml)
 [![SLSA 3](https://github.com/szl-holdings/uds-mesh/actions/workflows/slsa.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/slsa.yml)
 [![DCO](https://github.com/szl-holdings/uds-mesh/actions/workflows/dco.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/dco.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/szl-holdings/uds-mesh/badge)](https://securityscorecards.dev/viewer/?uri=github.com/szl-holdings/uds-mesh)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0001--0110--4173-A6CE39.svg?style=flat-square&logo=orcid&logoColor=white)](https://orcid.org/0009-0001-0110-4173)
 
 > Unified Data System — cross-component span schemas and governance receipts for OTEL-style observability, grounded in Doctrine v6 graph topology.
