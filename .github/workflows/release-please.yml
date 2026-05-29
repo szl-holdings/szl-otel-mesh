@@ -1,7 +1,7 @@
 name: Release Please
 
 # Automated changelog + release-PR management via Conventional Commits.
-# Reusable workflow pinned SHA: c8359e53b40560f15ed5c25c3e4e1256b0536cf8 (2026-05-28)
+# Reusable workflow pinned SHA: 1c5f538ed3b8fe284df98b453d0db94f7a600c41 (2026-05-28)
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   release-please:
-    uses: szl-holdings/.github/.github/workflows/reusable-release-please.yml@c8359e53b40560f15ed5c25c3e4e1256b0536cf8 # v1 (.github main)
+    uses: szl-holdings/.github/.github/workflows/reusable-release-please.yml@1c5f538ed3b8fe284df98b453d0db94f7a600c41 # v1 (.github main)
     with:
       release-type: node
       package-name: uds-mesh
