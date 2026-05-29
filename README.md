@@ -2,6 +2,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-0B1F3A.svg?style=flat-square&logo=apache&logoColor=00D4FF)](https://www.apache.org/licenses/LICENSE-2.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20434276.svg)](https://doi.org/10.5281/zenodo.20434276)
 [![CI](https://github.com/szl-holdings/uds-mesh/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/ci.yml)
+[![Tests](https://github.com/szl-holdings/uds-mesh/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/tests.yml)
 [![CodeQL](https://github.com/szl-holdings/uds-mesh/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/codeql.yml)
 [![SBOM](https://github.com/szl-holdings/uds-mesh/actions/workflows/sbom.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/sbom.yml)
 [![SLSA 3](https://github.com/szl-holdings/uds-mesh/actions/workflows/slsa.yml/badge.svg?branch=main)](https://github.com/szl-holdings/uds-mesh/actions/workflows/slsa.yml)
@@ -19,6 +20,17 @@
 > in the [Ouroboros Thesis v18.0](https://github.com/szl-holdings/ouroboros-thesis) (DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)).
 > Source for the published thesis is in [`szl-holdings/ouroboros-thesis`](https://github.com/szl-holdings/ouroboros-thesis).
 > Concept DOI (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
+
+> **Test coverage (honest count — 2026-05-29):**
+> - `tests/test_span_schemas.py` — 33 pytest tests (span schema validation)
+> - `tests/test_attestation_chain.py` — 20 pytest tests (DSSE receipt chain integrity)
+> - `tests/test_bundle_manifests.py` — 17 pytest tests (bundle YAML validation)
+> - `uds_v18_24_substrate.py` — 173 doctests + 92 assert checks = 265 self-tests
+> - **Total: 70 pytest + 265 substrate = 335 validated UDS artifacts**
+>
+> Grep-able: `grep -c "def test_" tests/**/*.py` → 70
+> The "269 tests" figure cited in some earlier docs referred to the substrate
+> doctest+assert count (265 ≈ 269). All tests now run in CI via `tests.yml`.
 
 ## Graph-Theoretic Foundation
 
