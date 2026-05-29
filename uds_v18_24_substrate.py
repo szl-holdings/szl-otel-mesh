@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings
+# ORCID: 0009-0001-0110-4173
+# Doctrine v6
 # =====================================================================
 # uds_v18_24_substrate.py
 # =====================================================================
