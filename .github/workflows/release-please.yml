@@ -7,8 +7,10 @@ on:
   push:
     branches: [main]
 
+# Workflow-level permissions must include everything the reusable workflow needs.
 permissions:
-  contents: read
+  contents: write       # release-please creates PRs, tags, releases
+  pull-requests: write  # release-please updates the release PR body
 
 jobs:
   release-please:
