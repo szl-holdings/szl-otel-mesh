@@ -135,3 +135,15 @@ Org page: [github.com/szl-holdings](https://github.com/szl-holdings) · Doctrine
 
 
 ---
+
+
+---
+
+## What uds-mesh Is NOT
+
+Doctrine v6 honest scoping:
+
+- **Not a networking mesh (no service mesh).** uds-mesh defines schema for UDS *span governance* receipts, not a network topology.
+- **Not a Kubernetes operator.** The Zarf package ships schemas; orchestration is in `platform`.
+- **Not framework-agnostic.** Schemas are designed for the SZL/Defense Unicorns UDS ecosystem specifically.
+- **Not a real-time telemetry system.** Spans are captured per governance event; continuous streaming is via `vsp-otel`.
