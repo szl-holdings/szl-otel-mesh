@@ -34,6 +34,16 @@
 > The "269 tests" figure cited in some earlier docs referred to the substrate
 > doctest+assert count (265 ≈ 269). All tests now run in CI via `tests.yml`.
 
+## On Hugging Face
+
+This repository's live demo, dataset mirrors, and org showcase live on the [SZLHOLDINGS Hugging Face org](https://huggingface.co/SZLHOLDINGS):
+
+| Surface | Hugging Face artifact |
+|---------|---------------------|
+| **Live demo** | [mcp-receipts-server](https://huggingface.co/spaces/SZLHOLDINGS/mcp-receipts-server) |
+| **Source mirror** | [uds-spans-receipts](https://huggingface.co/datasets/SZLHOLDINGS/uds-spans-receipts) · [uds-governance-receipts](https://huggingface.co/datasets/SZLHOLDINGS/uds-governance-receipts) |
+| **Org showcase** | [SZLHOLDINGS on Hugging Face](https://huggingface.co/SZLHOLDINGS) — 22 datasets · 19+ Spaces · 2 models |
+
 ## Graph-Theoretic Foundation
 
 The UDS mesh is a directed acyclic graph (DAG) of typed spans. The topology satisfies:
@@ -125,11 +135,3 @@ Org page: [github.com/szl-holdings](https://github.com/szl-holdings) · Doctrine
 
 
 ---
-
-## On Hugging Face
-
-This repository is mirrored and published on the [SZLHOLDINGS](https://huggingface.co/SZLHOLDINGS) Hugging Face organization:
-
-- [huggingface.co/datasets/SZLHOLDINGS/uds-spans-receipts](https://huggingface.co/datasets/SZLHOLDINGS/uds-spans-receipts) — uds-spans-receipts (100 OTel spans, 50 DSSE receipts)
-- [huggingface.co/spaces/SZLHOLDINGS/mcp-receipts-server](https://huggingface.co/spaces/SZLHOLDINGS/mcp-receipts-server) — mcp-receipts-server (MCP Space, 4 tools)
-
