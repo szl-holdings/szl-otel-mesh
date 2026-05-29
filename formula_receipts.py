@@ -135,9 +135,20 @@ class FormulaReceipt:
     def to_dsse_envelope(self) -> dict:
         """
         Return a DSSE envelope wrapping this receipt.
+        The payload is the receipt dict WITHOUT the signature field
+        (signature is in the DSSE signatures array, not the payload body).
         Compatible with rosie-operator-console's dsse_verify_envelope().
         """
-        payload = json.dumps(asdict(self), sort_keys=True, separators=(",", ":")).encode("utf-8")
+        receipt_body = {
+            "formula":         self.formula,
+            "inputs_hash":     self.inputs_hash,
+            "output":          self.output,
+            "lean_theorem":    self.lean_theorem,
+            "lean_file":       self.lean_file,
+            "lean_commit_sha": self.lean_commit_sha,
+            "timestamp":       self.timestamp,
+        }
+        payload = json.dumps(receipt_body, sort_keys=True, separators=(",", ":")).encode("utf-8")
         return {
             "payload":     _b64url(payload),
             "payloadType": PAYLOAD_TYPE,
