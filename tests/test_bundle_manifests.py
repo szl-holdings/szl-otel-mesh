@@ -1,8 +1,12 @@
 """
 tests/test_bundle_manifests.py — Bundle manifest and UDS bundle YAML tests
 
-Validates uds-bundle.yaml, bundles/v0.3.1/uds-bundle.yaml, and
+Validates uds-bundle.yaml, bundles/v0.3.1-demo/uds-bundle.yaml, and
 uds-mesh-pointer-manifest.yaml.
+
+Note: the prior bundles/v0.3.1/uds-bundle.yaml referenced six nonexistent
+packages under the wrong org (ghcr.io/szl/...) and was deleted; it is replaced
+by the honest single-application demo at bundles/v0.3.1-demo/uds-bundle.yaml.
 
 Run: pytest tests/test_bundle_manifests.py -v
 """
@@ -12,7 +16,9 @@ import pytest
 import yaml
 
 REPO_ROOT = os.path.join(os.path.dirname(__file__), '..')
-BUNDLE_V031 = os.path.join(REPO_ROOT, 'bundles', 'v0.3.1', 'uds-bundle.yaml')
+# The fictional bundles/v0.3.1/ was deleted; the honest replacement is the
+# single-application receipts demo at bundles/v0.3.1-demo/.
+BUNDLE_V031 = os.path.join(REPO_ROOT, 'bundles', 'v0.3.1-demo', 'uds-bundle.yaml')
 BUNDLE_ROOT = os.path.join(REPO_ROOT, 'uds-bundle.yaml')
 POINTER_MANIFEST = os.path.join(REPO_ROOT, 'uds-mesh-pointer-manifest.yaml')
 
