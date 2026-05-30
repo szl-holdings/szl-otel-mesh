@@ -31,8 +31,8 @@
 
 > **NOTE:** SLSA Level 1 (source + build provenance documented). L2/L3 require Sigstore + isolated builders (roadmap).
 
-> Cross-component span schemas and governance receipts for OTEL-style observability, grounded in Doctrine v6 graph topology with A15 persistent-homology (ELZ) invariant.  
-> Doctrine v6 · DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
+> Cross-component span schemas and governance receipts for OTEL-style observability, grounded in Doctrine v7 graph topology with A15 persistent-homology (ELZ) invariant.  
+> Doctrine v7 · DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
 
 **uds-mesh** implements the Unified Data System span schema layer for the SZL Holdings governed AI platform. It emits DSSE-wrapped governance receipts, maintains gRPC/Protobuf span contracts, and guarantees topological continuity of audit fibers across component boundaries through the A15 ELZ invariant (STAGED — topology claim is axiom-structured, pending `lake build` fix in lutar-lean).
 
@@ -55,10 +55,12 @@
 | Span schema pytest tests | 33 | `tests/test_span_schemas.py` |
 | DSSE receipt chain tests | 20 | `tests/test_attestation_chain.py` |
 | Bundle manifest tests | 17 | `tests/test_bundle_manifests.py` |
-| Substrate self-tests (doctests + asserts) | 265 | `uds_v18_24_substrate.py` |
+| Formula receipt tests | 93 | `tests/test_formula_receipts.py` |
+| Substrate self-tests (doctests + asserts) | 269 | `uds_v18_24_substrate.py` |
 | Lean declarations (org) | 626 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
-| Lean axioms (org) | 12 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
-| HF Spaces (org) | 27 | [SZLHOLDINGS HF org](https://huggingface.co/SZLHOLDINGS) |
+| Lean axioms (org) | 15 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
+| HF Spaces (org) | 26 | [SZLHOLDINGS HF org](https://huggingface.co/SZLHOLDINGS) |
+| HF datasets (org) | 29 | [SZLHOLDINGS HF org](https://huggingface.co/SZLHOLDINGS) |
 | Zenodo DOIs (org) | 7 | [Zenodo community](https://zenodo.org/communities/szl-holdings) |
 
 ---
@@ -79,8 +81,8 @@ gRPC/Protobuf span contracts govern the schema across components. A15 ELZ invari
 
 ```bash
 pip install -e .
-pytest tests/                          # 70 tests
-python uds_v18_24_substrate.py         # 265 self-tests
+pytest tests/                          # 163 tests (33 schema + 20 chain + 17 bundle + 93 formula)
+python uds_v18_24_substrate.py         # 269 self-tests
 ```
 
 ---
