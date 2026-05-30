@@ -11,6 +11,9 @@
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/szl-holdings/uds-mesh/badge)](https://securityscorecards.dev/viewer/?uri=github.com/szl-holdings/uds-mesh)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0001--0110--4173-A6CE39.svg?style=flat-square&logo=orcid&logoColor=white)](https://orcid.org/0009-0001-0110-4173)
 
+
+> **NOTE:** SLSA Level 1 (source + build provenance documented). L2/L3 require Sigstore + isolated builders (roadmap).
+
 > Cross-component span schemas and governance receipts for OTEL-style observability, grounded in Doctrine v6 graph topology with A15 persistent-homology (ELZ) invariant.  
 > Doctrine v6 · DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
 
