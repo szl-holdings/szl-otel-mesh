@@ -1,7 +1,8 @@
 name: Release Please
 
 # Automated changelog + release-PR management via Conventional Commits.
-# Reusable workflow pinned SHA: 1c5f538ed3b8fe284df98b453d0db94f7a600c41 (2026-05-28)
+# Reusable workflow pinned SHA: 1c5f538ed3b8fe284df98b453d0db94f7a600c41 (.github main 2026-05-28)
+# Fixed: release-type changed from "node" to "simple" — uds-mesh has no package.json
 
 on:
   push:
@@ -14,9 +15,10 @@ jobs:
   release-please:
     uses: szl-holdings/.github/.github/workflows/reusable-release-please.yml@1c5f538ed3b8fe284df98b453d0db94f7a600c41 # v1 (.github main)
     with:
-      release-type: node
+      release-type: simple
       package-name: uds-mesh
       target-branch: main
     permissions:
       contents: write
       pull-requests: write
+
