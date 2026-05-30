@@ -56,7 +56,7 @@
 | DSSE receipt chain tests | 20 | `tests/test_attestation_chain.py` |
 | Bundle manifest tests | 17 | `tests/test_bundle_manifests.py` |
 | Substrate self-tests (doctests + asserts) | 265 | `uds_v18_24_substrate.py` |
-| Lean declarations (org) | 217 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
+| Lean declarations (org) | 626 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
 | Lean axioms (org) | 12 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
 | HF Spaces (org) | 27 | [SZLHOLDINGS HF org](https://huggingface.co/SZLHOLDINGS) |
 | Zenodo DOIs (org) | 7 | [Zenodo community](https://zenodo.org/communities/szl-holdings) |
