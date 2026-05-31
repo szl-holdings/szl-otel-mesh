@@ -1,6 +1,6 @@
 # SZL UDS demo bundle — v0.3.1-demo
 
-> **rosie is the Jarvis operator console. a11oy is the policy substrate. amaru, sentra, and vessels are the organs.**
+> **rosie is the operator console. a11oy is the policy substrate. amaru, sentra, and vessels are the organs.**
 > This bundle ships the one piece of that anatomy that is real and deployable today — the `szl-receipts` governance receipt service — and is honest about the rest being roadmap.
 
 ## What this bundle deploys
@@ -19,7 +19,7 @@ The previous `bundles/v0.3.1/uds-bundle.yaml` referenced **six packages that do 
 
 ## What is NOT in this bundle (and why)
 
-The five module packages — **rosie** (Jarvis console), **a11oy** (policy substrate), **amaru** (memory), **sentra** (immune), **vessels** (deployment fabric) — each now have a `zarf-build-and-sign.yml` build path (separate per-module PRs), but they are **not** in this bundle because:
+The five module packages — **rosie** (operator console), **a11oy** (policy substrate), **amaru** (memory), **sentra** (immune), **vessels** (deployment fabric) — each now have a `zarf-build-and-sign.yml` build path (separate per-module PRs), but they are **not** in this bundle because:
 
 1. **No published images** — all five GHCR images returned `403` on 2026-05-30 (not pushed).
 2. **No UDS `Package` CR** — each ships raw `Deployment`+`Service`+`Namespace`, so uds-core's default-deny network policy would block them. They would run un-meshed.
