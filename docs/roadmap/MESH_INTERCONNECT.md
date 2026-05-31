@@ -21,7 +21,7 @@ A search for `svc.cluster.local|register|orchestrat|discovery|virtualservice|pee
 
 | Module | Role | Mesh function |
 |--------|------|---------------|
-| **rosie** | Jarvis operator console | Human-facing command surface; issues commands into the mesh |
+| **rosie** | operator console | Human-facing command surface; issues commands into the mesh |
 | **a11oy** | policy + receipt substrate | Orchestrator service the other organs register with and call |
 | **amaru** | memory | Stateful organ behind the substrate |
 | **sentra** | immune | Egress/tripwire organ |

@@ -20,7 +20,7 @@
 #
 # ANATOMY (for readers — NOT yet wired in this bundle)
 # ----------------------------------------------------
-#   rosie    = the Jarvis operator console (human-facing command surface).
+#   rosie    = the operator console (human-facing command surface).
 #   a11oy    = the policy + receipt substrate rosie commands.
 #   amaru    = memory.  sentra = immune.  vessels = deployment fabric.
 # The five module packages (built by the per-module zarf-build-and-sign.yml PRs)
