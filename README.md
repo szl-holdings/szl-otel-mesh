@@ -57,7 +57,7 @@
 | Bundle manifest tests | 17 | `tests/test_bundle_manifests.py` |
 | Formula receipt tests | 93 | `tests/test_formula_receipts.py` |
 | Substrate self-tests (doctests + asserts) | 269 | `uds_v18_24_substrate.py` |
-| Lean declarations (org) | 626 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
+| Lean declarations (org) | 752 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
 | Lean axioms (org) | 15 | [lutar-lean](https://github.com/szl-holdings/lutar-lean) |
 | HF Spaces (org) | 26 | [SZLHOLDINGS HF org](https://huggingface.co/SZLHOLDINGS) |
 | HF datasets (org) | 29 | [SZLHOLDINGS HF org](https://huggingface.co/SZLHOLDINGS) |
