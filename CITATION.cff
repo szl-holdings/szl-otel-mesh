@@ -1,29 +1,33 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite as follows."
-title: "uds-mesh — Unified Data System cross-component span schemas and governance receipts"
-version: "0.2.0"
-date-released: "2026-05-29"
-abstract: >-
-  Cross-component span schemas and governance receipts for OTEL-style
-  observability in the SZL Holdings governed AI platform. Implements
-  graph-theoretic span bundles over the Ouroboros Thesis governance framework.
+title: "uds-mesh — Service mesh integration for SZL on Defense Unicorns UDS"
+message: "If you use this work, please cite it as below."
 type: software
 authors:
   - family-names: Lutar
-    given-names: "Stephen P."
-    name-suffix: "Jr."
-    affiliation: SZL Holdings
+    given-names: Stephen P.
+    name-suffix: Jr.
     orcid: "https://orcid.org/0009-0001-0110-4173"
+    affiliation: "SZL Holdings, Inc."
+abstract: >-
+  Service mesh integration for SZL Holdings' governed AI platform on Defense
+  Unicorns UDS. Packages the Ouroboros span schema layer as a UDS-deployable
+  bundle with cosign-signed attestations, DSSE-wrapped governance receipts, and
+  gRPC/Protobuf span contracts across component boundaries.
+keywords:
+  - AI governance
+  - UDS
+  - Defense Unicorns
+  - OpenTelemetry
+  - DSSE
+  - governance receipts
+  - service mesh
+  - EU AI Act
+  - NIST AI RMF
 license: Apache-2.0
+version: "0.3.0"
+date-released: "2026-05-31"
 url: "https://github.com/szl-holdings/uds-mesh"
 repository-code: "https://github.com/szl-holdings/uds-mesh"
-keywords:
-  - szl-holdings
-  - ai-governance
-  - observability
-  - opentelemetry
-  - spans
-  - governance-receipts
 identifiers:
   - description: "Ouroboros Thesis v18.0 — research foundation (Zenodo)"
     type: doi
@@ -31,6 +35,13 @@ identifiers:
   - description: "Ouroboros Thesis concept DOI — always-latest"
     type: doi
     value: "10.5281/zenodo.19944926"
-  - description: "ORCID iD of the principal author"
-    type: other
-    value: "https://orcid.org/0009-0001-0110-4173"
+preferred-citation:
+  type: article
+  title: "The Ouroboros Substrate (v18.0)"
+  authors:
+    - family-names: Lutar
+      given-names: Stephen P.
+      name-suffix: Jr.
+      orcid: "https://orcid.org/0009-0001-0110-4173"
+  year: 2026
+  doi: "10.5281/zenodo.20434276"
