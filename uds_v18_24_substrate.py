@@ -914,6 +914,52 @@ class PINNResidualLambda:
             "axis_3_residual": c,
         }
 
+    def signed_lambda_receipt(self, residual: float, sha: str) -> dict[str, Any]:
+        """Emit a Λ-receipt sealed in a DSSE envelope (ADDITIVE, Yachay 2026-06-01).
+
+        Wraps :meth:`lambda_receipt` in an ECDSA-P256 DSSE envelope using the
+        canonical mesh cosign key (keyid ``szlholdings-cosign``), mirroring
+        amaru's DINN receipt path so a PINN receipt and a DINN receipt verify
+        with the *same* ``cosign verify-blob --key cosign.pub`` command.
+
+        The plain :meth:`lambda_receipt` is unchanged. When the cosign private
+        key (env ``SZL_COSIGN_PRIVATE_PEM``) or the ``cryptography`` package is
+        absent, the envelope is honestly marked UNSIGNED — no fabricated
+        signature. The signature attests the receipt bytes, NOT the PINN physics;
+        Λ uniqueness remains Conjecture 1 (never a theorem); SLSA L1 (honest).
+
+        >>> rec = PINNResidualLambda(k=1.0).signed_lambda_receipt(0.0, "0"*64)
+        >>> rec["receipt"]["confidence"]
+        1.0
+        >>> rec["dsse"]["payloadType"]
+        'application/vnd.szl.pinn-lambda-receipt+json'
+        >>> rec["dsse"]["_dsse"]
+        'DSSEv1'
+        >>> rec["keyid"]
+        'szlholdings-cosign'
+        >>> isinstance(rec["dsse"]["signed"], bool)
+        True
+        """
+        receipt = self.lambda_receipt(residual, sha)
+        try:
+            import pinn_dsse as _pdsse
+        except Exception:  # pragma: no cover - defensive (module always present)
+            from . import pinn_dsse as _pdsse  # type: ignore
+        payload = {
+            "kind": "pinn-lambda-receipt",
+            "doctrine_version": "v11",
+            "lambda_status": "Conjecture 1 (NOT a theorem)",
+            "slsa": "L1 (honest)",
+            **receipt,
+        }
+        env = _pdsse.sign_payload(payload)
+        return {
+            "receipt": receipt,
+            "keyid": _pdsse.KEYID,
+            "signing_available": _pdsse.signing_available(),
+            "dsse": env,
+        }
+
 
 # =====================================================================
 # GRAFT 4 — A15PersistentHomologyCheck
