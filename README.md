@@ -1,3 +1,5 @@
+> **Trademark notice.** SZL Holdings' use of "UDS" references Defense Unicorns' Unicorn Delivery Service (USPTO Serial 99831126). SZL Holdings is not affiliated with Defense Unicorns. SZL contributions to the UDS ecosystem are made through upstream PRs. See: https://defenseunicorns.com/uds
+
 <div align="center">
 
 # uds-mesh
