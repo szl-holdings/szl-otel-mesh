@@ -24,6 +24,20 @@
 
 ---
 
+
+## Architecture
+
+```mermaid
+flowchart LR
+  SPAN[OTel span]:::in --> SCHEMA[UDS span schema]
+  SCHEMA --> AXES[13-axis Λ mapping]
+  AXES --> RCPT[Governance receipt]
+  RCPT --> DAG[(Khipu Merkle DAG)]
+  classDef in fill:#0B1F3A,color:#fff,stroke:#00D4FF;
+```
+
+> 13-axis canonical trust schema. Doctrine v11.
+
 ## What this is
 
 **uds-mesh** is the Defense Unicorns UDS service mesh integration for the SZL Holdings governed AI platform. It packages the Ouroboros span schema layer as a UDS-deployable bundle (`uds-bundle.yaml`), emits DSSE-wrapped governance receipts, and enforces gRPC/Protobuf span contracts across component boundaries. The A15 ELZ (persistent-homology) invariant guarantees that no audit fiber is severed at a mesh boundary — axiom-structured, pending full `lake build` discharge in lutar-lean.
