@@ -1,5 +1,11 @@
 # uds-mesh
 
+> **CANONICAL HOME.** This repository is the single canonical home of the UDS mesh
+> per **[ADR-0001](CANONICAL.md)** (ACCEPTED 2026-06-03). A non-canonical fold-copy at
+> `szl-holdings/uds-bundles/mesh/` has been demoted to a thin pointer back here; the
+> prior "absorbed into szl-fleet-overlay / ARCHIVED" claim was inaccurate and is corrected.
+> See [`CANONICAL.md`](CANONICAL.md).
+
 **Layer 5 (Observability) of the SZL 7-layer architecture.**
 UDS cross-component span schemas + DSSE governance receipts onto the Khipu Merkle DAG.
 
@@ -99,3 +105,9 @@ pepr/                 PQC governance policy (Pepr)
 
 Signed-off-by: Yachay <yachay@szlholdings.ai>
 Co-Authored-By: Perplexity Computer Agent <agent@perplexity.ai>
+
+---
+
+*Canonical-home declaration — see [`CANONICAL.md`](CANONICAL.md) and ADR-0001.*
+
+Doctrine v11 — 749/14/163 — c7c0ba17 · Λ = Conjecture 1 (never a theorem) · SLSA L1+L2 · HONESTY OVER CHECKLIST
