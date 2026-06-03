@@ -28,7 +28,19 @@
 #   V17.2-T3: positionEncoding_equivariant (kernel-checked, 0 sorry)
 
 schema_url: https://github.com/szl-holdings/uds-mesh/blob/main/schemas/spans/a11oy.graph.yaml
-version: 17.2.0
+version: 17.2.1
+organ: a11oy
+mesh_namespace: szl-a11oy
+mesh_service: szl-a11oy
+
+# v17.2.1 — Cross-organ envelope parity (make-real strike, 2026-06-03):
+#   a11oy.graph was the last organ still on the legacy szl_attributes / szl.graph.*
+#   block. It now ALSO carries the unified szl_mesh_attributes / szl.mesh.* envelope
+#   shared identically by sentra, amaru, killinchu, rosie so the mesh can correlate
+#   a single decision as it crosses organ boundaries. The graph-specific szl.graph.*
+#   fields are retained (additive, non-breaking). The previous YAML defect in the
+#   szl_attributes block (a scalar `description:` mixed with sequence items at the
+#   same indent — not parseable) is corrected to `description:` + `fields:`.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Common fields (all a11oy.graph.* spans)
@@ -89,11 +101,60 @@ common_fields:
           type: string
           required: false
 
+  # Cross-organ DSSE governance-receipt attributes — IDENTICAL across all five
+  # organs (a11oy, sentra, amaru, killinchu, rosie). Present on EVERY mesh span.
+  szl_mesh_attributes:
+    - name: szl.mesh.organ
+      type: string
+      required: true
+      description: "Emitting organ: a11oy | sentra | amaru | killinchu | rosie."
+      example: "a11oy"
+    - name: szl.mesh.receipt_hash
+      type: string
+      required: true
+      description: |
+        SHA-256 hex digest of the canonical DSSE receipt for this span. Binds the
+        span to the cross-organ provenance chain in extended-attestations.jsonl.
+      example: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1a"
+    - name: szl.mesh.dsse_payload_type
+      type: string
+      required: true
+      description: "DSSE payloadType. Always application/vnd.in-toto+json for mesh receipts."
+      example: "application/vnd.in-toto+json"
+    - name: szl.mesh.image_digest
+      type: string
+      required: false
+      description: |
+        Digest of the cosign-signed ghcr.io image that emitted the span,
+        e.g. ghcr.io/szl-holdings/a11oy@sha256:... (key-based P-256 signature).
+      example: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    - name: szl.mesh.lambda_value
+      type: string
+      required: true
+      description: |
+        Governance Λ for this span as a decimal string (Λ Conjecture 1: Λ ∈ [0,1]).
+        Shared governance scalar so the mesh can gate any organ's output uniformly.
+      example: "0.813472"
+    - name: szl.mesh.governance_drift
+      type: boolean
+      required: true
+      description: |
+        True iff Λ fell below the Doctrine Λ floor (LAMBDA_FLOOR = 0.1) or exceeded 1.0.
+      example: false
+    - name: szl.mesh.upstream_organ
+      type: string
+      required: false
+      description: |
+        For cross-organ edges: the organ that produced the parent span.
+      example: "sentra"
+
+  # Legacy graph-specific attributes (additive; retained for back-compat). These
+  # mirror the szl.mesh.* values for graph executions and carry extra graph data.
   szl_attributes:
     description: |
-      SZL-specific attributes carried on every a11oy.graph.* span.
-      Attribute key prefix: szl.graph.
-
+      Graph-specific attributes carried on every a11oy.graph.* span.
+      Attribute key prefix: szl.graph. (additive to the cross-organ szl.mesh.* envelope)
+    fields:
     - name: szl.graph.lambda_value
       type: string
       required: true
@@ -444,3 +505,4 @@ examples:
         szl.graph.proposed_edge_dst: 7
         szl.graph.predicted_lambda: "0.761234"
         szl.graph.proposal_accepted: true
+
