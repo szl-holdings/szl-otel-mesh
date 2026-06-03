@@ -279,7 +279,98 @@ def verify_batch(span_otel: list[dict], agg: dict, signer_id: str) -> bool:
     return _BLSBackend.aggregate_verify(signers, root_hash, agg["agg_sig"])
 
 
+# ── Formula wiring (real-edge-v2): the mesh runtime INVOKES these formulas ─────
+# Wired in so the bundle actually CALLS the formulas, not just ships their code:
+#   * pac_bayes_quorum.gate_merge  — run BEFORE merging cross-organ verdicts
+#   * bls_aggregate.cosign_chain   — REAL BLS12-381 aggregate over the Khipu chain root
+#   * welford_streaming.StreamingStats — running stats on the OTLP trace fan-out
+# Each carries a thesis-v22 citation + a real Lean theorem permalink (see the modules).
+try:  # package-relative when imported as mesh.sdk.mesh
+    from ..formulas import pac_bayes_quorum as _pbq
+    from ..formulas import bls_aggregate as _blsagg
+    from ..formulas import welford_streaming as _wstream
+    _FORMULAS_OK = True
+except Exception:  # pragma: no cover — flat import fallback
+    try:
+        import os as _os, sys as _sys
+        _root = _os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+        if _root not in _sys.path:
+            _sys.path.insert(0, _root)
+        from mesh.formulas import pac_bayes_quorum as _pbq  # type: ignore
+        from mesh.formulas import bls_aggregate as _blsagg  # type: ignore
+        from mesh.formulas import welford_streaming as _wstream  # type: ignore
+        _FORMULAS_OK = True
+    except Exception as _fe:  # pragma: no cover
+        _pbq = _blsagg = _wstream = None
+        _FORMULAS_OK = False
+
+
+class MeshGovernance:
+    """Runtime coordinator that operationalises the three mesh formulas.
+
+    The mesh creates ONE of these per cross-organ decision cycle. It:
+      1. gates the merge with PAC-Bayes confidence + Byzantine quorum (gate_merge),
+      2. folds each organ's fan-out latency through the Welford streaming accumulator,
+      3. produces a REAL BLS12-381 aggregate signature over the Khipu chain root when
+         3+ organs co-sign — a single FastAggregateVerify replaces N pairing checks.
+    """
+
+    def __init__(self, f: int = 1, confidence_floor: float = 0.5):
+        if not _FORMULAS_OK:
+            raise RuntimeError("mesh.formulas not importable; cannot run MeshGovernance")
+        self.f = f
+        self.confidence_floor = confidence_floor
+        self.fanout = _wstream.StreamingStats()
+
+    def observe_fanout(self, latency_ms: float) -> dict:
+        """Fold one OTLP fan-out latency into the running Welford stats."""
+        return self.fanout.observe(float(latency_ms))
+
+    def gate(self, verdicts: dict, n_obs: int = 64, kl: float = 0.0,
+             delta: float = 0.05) -> dict:
+        """PAC-Bayes + Byzantine quorum gate, run BEFORE the mesh merges verdicts."""
+        return _pbq.gate_merge(verdicts, f=self.f, n_obs=n_obs, kl=kl, delta=delta,
+                               confidence_floor=self.confidence_floor)
+
+    def cosign(self, organs: list[str], chain_root: str) -> dict:
+        """REAL BLS12-381 aggregate signature over the cross-organ Khipu chain root."""
+        return _blsagg.cosign_chain(organs, chain_root)
+
+    def decide_and_cosign(self, verdicts: dict, chain_root: str,
+                          n_obs: int = 64) -> dict:
+        """End-to-end: gate the merge, then (if allowed) BLS-aggregate the co-signature."""
+        gate = self.gate(verdicts, n_obs=n_obs)
+        result = {"gate": gate, "fanout_stats": self.fanout.snapshot()}
+        if gate["allow_merge"]:
+            organs = gate["quorum"]["agreeing_organs"]
+            result["cosign"] = self.cosign(organs, chain_root)
+            result["merged_decision"] = gate["merged_decision"]
+        else:
+            result["cosign"] = None
+            result["merged_decision"] = None
+        result["value"] = bool(gate["allow_merge"])
+        result["doctrine"] = "v11 · \u039b = Conjecture 1 (NEVER a theorem)"
+        return result
+
+    @staticmethod
+    def formulas_index() -> list[dict]:
+        """Honest index of the wired mesh formulas + Lean permalinks."""
+        return [
+            {"name": "pac_bayes_quorum", "citation": _pbq.CITATION,
+             "lean_theorem": _pbq.LEAN_THEOREM,
+             "lean_permalink": _pbq.LEAN_PERMALINK_PACBAYES},
+            {"name": "bls_aggregate", "citation": _blsagg.CITATION,
+             "lean_theorem": _blsagg.LEAN_THEOREM,
+             "lean_permalink": _blsagg.LEAN_PERMALINK,
+             "bls_available": _blsagg.AVAILABLE},
+            {"name": "welford_streaming", "citation": _wstream.CITATION,
+             "lean_theorem": _wstream.LEAN_THEOREM,
+             "lean_permalink": _wstream.LEAN_PERMALINK},
+        ]
+
+
 __all__ = [
     "TraceContext", "MeshSpan", "MeshEmitter", "verify_batch",
+    "MeshGovernance",
     "LAMBDA_FLOOR_MESH", "ORGANS", "SPAN_NAMES",
 ]
