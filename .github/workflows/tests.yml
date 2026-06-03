@@ -4,14 +4,15 @@ name: Tests
 #   - tests/test_span_schemas.py   (33 tests — schema validation)
 #   - tests/test_attestation_chain.py (20 tests — DSSE receipt chain)
 #   - tests/test_bundle_manifests.py  (17 tests — bundle YAML validation)
-# Total: 70 pytest tests — all grep-able from tests/ in this repo.
+#   - tests/test_mesh_formulas.py     (6 tests — PAC-Bayes quorum + BLS aggregate + Welford)
+# Total: 76 pytest tests — all grep-able from tests/ in this repo.
 #
 # Also adds uds_v18_24_substrate.py self-test (173 doctests + 92 asserts).
 #
 # The "269 UDS tests" claim that appeared in some docs referred to this
 # substrate's doctests (173) + asserts (92) = 265 ≈ 269 (rounding/drift).
-# HONEST COUNT: 70 real pytest tests in tests/ + 265 in uds_v18_24_substrate.py
-# = 335 validated UDS artifacts total.
+# HONEST COUNT: 76 real pytest tests in tests/ + 265 in uds_v18_24_substrate.py
+# = 341 validated UDS artifacts total.
 
 on:
   push:
@@ -19,6 +20,7 @@ on:
     paths:
       - 'tests/**'
       - 'schemas/**'
+      - 'mesh/**'
       - 'extended-attestations.jsonl'
       - 'uds-bundle.yaml'
       - 'bundles/**'
@@ -29,6 +31,7 @@ on:
     paths:
       - 'tests/**'
       - 'schemas/**'
+      - 'mesh/**'
       - 'extended-attestations.jsonl'
       - 'uds-bundle.yaml'
       - 'bundles/**'
@@ -45,7 +48,7 @@ concurrency:
 
 jobs:
   pytest-suite:
-    name: pytest — Schema + Attestation + Bundle (70 tests)
+    name: pytest — Schema + Attestation + Bundle + Mesh Formulas (76 tests)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -55,7 +58,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install test dependencies
-        run: pip install pytest pyyaml
+        run: pip install pytest pyyaml numpy py_ecc
 
       - name: Count test functions
         run: |
