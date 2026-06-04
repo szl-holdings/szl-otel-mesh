@@ -4,7 +4,7 @@
 # UDS-Mesh — architecture, wires, and honest gaps
 
 **Canonical home:** `szl-holdings/uds-mesh` (ADR-0001, ACCEPTED 2026-06-03).
-**Doctrine:** v11 LOCKED — 749/14/163 @ `c7c0ba17` · Λ = **Conjecture 1** (never a theorem) · SLSA L1 honest + L2 attested where `slsa-verifier` confirms · **HONESTY OVER CHECKLIST**.
+**Doctrine:** v11 LOCKED — 749/14/163 @ `c7c0ba17` · Λ = **Conjecture 1** (never a theorem) · SLSA L1 honest (L2 roadmap — `slsa-verifier` confirms on no deployed image yet) · **HONESTY OVER CHECKLIST**.
 
 This document describes what is actually wired in `main` today, the protocol on each
 wire, the thesis-v22 formula behind each organ, and the boundaries that are **not** yet
@@ -121,9 +121,11 @@ and were verified to resolve at those commits.
   is absent, `pinn_dsse` returns an explicit `UNSIGNED` marker — receipt bytes and the
   PAE hash are still integrity-bound and verify once the key is provided, but **no
   signature is fabricated.**
-- **SLSA scope.** SLSA **L1 (honest) + L2 (attested via public Sigstore + Rekor) only**,
-  and only where `slsa-verifier` actually confirms. No Iron Bank / FedRAMP / CMMC L2+ /
-  SWFT / Mission Owner claims. Section-889 vendor list unchanged.
+- **SLSA scope.** SLSA **L1 (honest)** today; **L2 is roadmap** (attested via public
+  Sigstore + Rekor) and claimed only where `slsa-verifier` actually confirms — which is
+  no deployed image yet (`cosign verify-attestation --type slsaprovenance` returns "no
+  matching attestations"). No Iron Bank / FedRAMP / CMMC L2+ / SWFT / Mission Owner
+  claims. Section-889 vendor list unchanged.
 - **BLS keys are demo-derived.** Per-organ BLS secret keys are derived deterministically
   from the organ id for reproducibility; in production each organ holds its own
   HSM-backed key. The crypto (pairings, aggregate verification) is real either way.
@@ -146,7 +148,7 @@ substrate self-test **275 tests GREEN**.
 
 *License: Apache-2.0 · © 2026 Lutar, Stephen P. — SZL Holdings*
 
-Doctrine v11 LOCKED — 749/14/163 @ `c7c0ba17` · Λ = Conjecture 1 (never a theorem) · SLSA L1+L2 · HONESTY OVER CHECKLIST
+Doctrine v11 LOCKED — 749/14/163 @ `c7c0ba17` · Λ = Conjecture 1 (never a theorem) · SLSA L1 honest (L2 roadmap) · HONESTY OVER CHECKLIST
 
 Signed-off-by: stephenlutar2-hash <stephenlutar2-hash@users.noreply.github.com>
 Co-Authored-By: Perplexity Computer Agent <agent@perplexity.ai>
