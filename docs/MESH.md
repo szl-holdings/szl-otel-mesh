@@ -118,9 +118,9 @@ and were verified to resolve at those commits.
 - **Istio mTLS is declared, not deployed.** `PeerAuthentication: STRICT` and
   `DestinationRule: ISTIO_MUTUAL` exist for all five organ namespaces and validate
   offline (`kubeconform` / `kubectl --dry-run=client`), but no Istio control plane or
-  sidecar injection runs in CI. Per `docs/roadmap/MESH_INTERCONNECT.md`, the real
-  interconnect (a11oy orchestrator service, per-module UDS `Package` CRs, sidecar
-  injection, AuthorizationPolicies) is a **v0.4.0 roadmap item — not shipped.**
+  mesh enrollment runs in CI. Per `docs/roadmap/MESH_INTERCONNECT.md`, the real
+  interconnect (a11oy orchestrator service, per-module UDS `Package` CRs, Istio Ambient
+  enrollment, AuthorizationPolicies) is a **v0.5.0 roadmap item — not shipped.**
 - **DSSE receipts are UNSIGNED in keyless runtimes.** When `SZL_COSIGN_PRIVATE_PEM`
   is absent, `pinn_dsse` returns an explicit `UNSIGNED` marker — receipt bytes and the
   PAE hash are still integrity-bound and verify once the key is provided, but **no

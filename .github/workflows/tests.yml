@@ -1,18 +1,22 @@
 name: Tests
 
-# Runs the uds-mesh real test suite:
-#   - tests/test_span_schemas.py   (33 tests — schema validation)
-#   - tests/test_attestation_chain.py (20 tests — DSSE receipt chain)
-#   - tests/test_bundle_manifests.py  (17 tests — bundle YAML validation)
-#   - tests/test_mesh_formulas.py     (6 tests — PAC-Bayes quorum + BLS aggregate + Welford)
-# Total: 76 pytest tests — all grep-able from tests/ in this repo.
+# Runs the uds-mesh real test suite (8 test files under tests/):
+#   - tests/test_span_schemas.py      (33 fns — schema validation)
+#   - tests/test_formula_receipts.py  (29 fns — formula receipt DSSE)
+#   - tests/test_quorum.py            (21 fns — Byzantine/PAC-Bayes quorum)
+#   - tests/test_attestation_chain.py (20 fns — DSSE receipt chain)
+#   - tests/test_bundle_manifests.py  (17 fns — bundle YAML validation)
+#   - tests/test_otlp_bridge.py       (7 fns  — OTLP span bridge)
+#   - tests/test_mesh_formulas.py     (6 fns  — BLS aggregate + Welford)
+#   - tests/test_manifests.py         (4 fns  — Istio/Package manifests)
+# Total: 137 test functions; pytest collects 210 items (with parametrize cases).
 #
-# Also adds uds_v18_24_substrate.py self-test (173 doctests + 92 asserts).
+# Also adds uds_v18_24_substrate.py self-test (178 doctests + 97 assertions = 275,
+# per the runtime's own "OK 275 tests" banner).
 #
-# The "269 UDS tests" claim that appeared in some docs referred to this
-# substrate's doctests (173) + asserts (92) = 265 ≈ 269 (rounding/drift).
-# HONEST COUNT: 76 real pytest tests in tests/ + 265 in uds_v18_24_substrate.py
-# = 341 validated UDS artifacts total.
+# HONEST COUNT: 210 collected pytest items in tests/ + 275 substrate self-test
+# checks. Counts are grep-able/reproducible: `pytest tests/ --co -q` and
+# `python3 uds_v18_24_substrate.py`.
 
 on:
   push:
