@@ -1,0 +1,83 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# uds-package.yaml — intel-triage wire (amaru).
+#
+# REAL: Namespace + Deployment + UDS Package CR reconciled by the UDS Operator.
+# ROADMAP: inter-organ mTLS to rosie (human-on-the-loop adjudication) — NOT
+# applied here; see docs/roadmap/MESH_INTERCONNECT.md.
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: szl-amaru
+  labels:
+    istio-injection: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amaru
+  namespace: szl-amaru
+  labels:
+    app.kubernetes.io/name: amaru
+    app.kubernetes.io/part-of: szl-mesh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: amaru
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: amaru
+    spec:
+      containers:
+        - name: amaru
+          image: ghcr.io/szl-holdings/amaru:uds-v0.2.0
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: SZL_COSIGN_PRIVATE_PEM
+              valueFrom:
+                secretKeyRef:
+                  name: szl-receipts-signing
+                  key: cosign.key
+                  optional: true
+---
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: szl-amaru
+  namespace: szl-amaru
+spec:
+  network:
+    expose:
+      - service: amaru
+        selector:
+          app.kubernetes.io/name: amaru
+        host: amaru
+        gateway: tenant
+        port: 8080
+        targetPort: 8080
+    allow:
+      - direction: Egress
+        selector:
+          app.kubernetes.io/name: amaru
+        remoteNamespace: szl-receipts
+        remoteSelector:
+          app.kubernetes.io/name: szl-receipts
+        port: 8080
+        description: "DSSE rationale-receipt egress"
+  sso:
+    - name: SZL amaru
+      clientId: uds-szl-amaru
+      redirectUris:
+        - "https://amaru.uds.dev/login/generic_oauth"
+  monitor:
+    - selector:
+        app.kubernetes.io/name: amaru
+      portName: http
+      targetPort: 8080
+      description: "amaru metrics"

@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# adapter.yaml — counter-UAS challenge schema  <->  canonical SZL envelope.
+#
+# Challenge input (illustrative counter-UAS track schema):
+#   { track_id, classification, range_m, roe_profile, detected_at }
+# Challenge output:
+#   { engagement, confidence, drift, basis, szl: { receipt: {...} } }
+
+request:
+  description: "Map a counter-UAS track into the canonical decision request for killinchu."
+  map:
+    - { from: "track_id",       to: "request_id" }
+    - { const: "counter-uas",   to: "vertical" }
+    - { const: "killinchu",     to: "organ" }
+    - { from: "classification", to: "subject.classification" }
+    - { from: "range_m",        to: "subject.range_m" }
+    - { from: "roe_profile",    to: "context.roe_profile" }
+    - { from: "detected_at",    to: "ts" }
+
+response:
+  description: "Map the Λ-gated engagement verdict back into the challenge output."
+  map:
+    - { from: "verdict",                   to: "engagement" }
+    - { from: "lambda_value",              to: "confidence" }
+    - { from: "governance_drift",          to: "drift" }
+    - { from: "rationale",                 to: "basis" }
+    - { from: "receipt.receipt_hash",      to: "szl.receipt.hash" }
+    - { from: "receipt.signature",         to: "szl.receipt.signature" }
+    - { from: "receipt.dsse_payload_type", to: "szl.receipt.payload_type" }

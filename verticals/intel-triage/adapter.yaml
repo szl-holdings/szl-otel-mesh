@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# adapter.yaml — intel-triage challenge schema  <->  canonical SZL envelope.
+#
+# Challenge input (illustrative intel-triage track schema):
+#   { query_id, question, reports[], requested_at }
+# Challenge output:
+#   { assessment, confidence, drift, rationale, citations[], szl: { receipt: {...} } }
+
+request:
+  description: "Map an intel-triage query into the canonical decision request for amaru."
+  map:
+    - { from: "query_id",        to: "request_id" }
+    - { const: "intel-triage",   to: "vertical" }
+    - { const: "amaru",          to: "organ" }
+    - { from: "question",        to: "subject.question" }
+    - { from: "reports",         to: "context.reports" }
+    - { from: "requested_at",    to: "ts" }
+
+response:
+  description: "Map amaru's cited, Λ-gated assessment back into the challenge output."
+  map:
+    - { from: "verdict",                   to: "assessment" }     # DEFER if evidence insufficient
+    - { from: "lambda_value",              to: "confidence" }
+    - { from: "governance_drift",          to: "drift" }
+    - { from: "rationale",                 to: "rationale" }      # carries the citations inline
+    - { from: "receipt.receipt_hash",      to: "szl.receipt.hash" }
+    - { from: "receipt.signature",         to: "szl.receipt.signature" }
+    - { from: "receipt.dsse_payload_type", to: "szl.receipt.payload_type" }

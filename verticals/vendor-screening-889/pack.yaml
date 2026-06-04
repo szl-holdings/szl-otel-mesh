@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# pack.yaml — Section-889 vendor-screening readiness pack.
+#
+# Deny-by-default vendor screen against the FY2019 NDAA §889(a)(1)(B) covered-
+# telecom list. Mapped to sentra (immune organ, fail-closed). The §889 list is
+# EXACTLY five named entities — no more, no less:
+#   Huawei · ZTE · Hytera · Hikvision · Dahua  (and their subsidiaries/affiliates)
+
+name: vendor-screening-889
+title: "Deny-by-default Section-889 vendor screen (sentra, fail-closed)"
+warhacker_track: "Tychee (reusable airgap deployment stacks — supply chain)"
+
+organ: sentra
+lambda_floor: 0.10
+span_name: sentra.gate.evaluate
+
+image: ghcr.io/szl-holdings/sentra:uds-v0.2.0
+namespace: szl-sentra
+
+# §889 covered entities — exactly five. The pack does not invent more.
+banned_vendors:
+  - Huawei
+  - ZTE
+  - Hytera
+  - Hikvision
+  - Dahua
+
+real:
+  - "sentra image published + cosign-signed on GHCR (uds-v0.2.0)"
+  - "per-organ Deployment + UDS Package CR reconciled by the UDS Operator"
+  - "deny-by-default screen → Λ-gate → DSSE verdict receipt (signed if key present)"
+  - "sentra is fail-closed: never PERMITs under governance drift"
+roadmap:
+  - "inter-organ mTLS to a11oy for receipt-substrate cross-check (MESH_INTERCONNECT.md)"
+
+license: Apache-2.0
+doctrine: "v11 — Λ = Conjecture 1 (never a theorem) · SLSA L1 honest"

@@ -1,0 +1,14 @@
+{
+  "request_id": "vendor-req-0481",
+  "vertical": "vendor-screening-889",
+  "organ": "sentra",
+  "subject": {
+    "vendor_name": "Hikvision Digital Technology Co., Ltd.",
+    "cage_code": "Z1A23"
+  },
+  "context": {
+    "components": ["ip-camera", "nvr-firmware"],
+    "denylist_basis": "FY2019 NDAA §889(a)(1)(B)"
+  },
+  "ts": "2026-06-04T09:15:00Z"
+}

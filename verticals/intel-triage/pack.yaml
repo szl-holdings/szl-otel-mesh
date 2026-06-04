@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# pack.yaml — intel-triage readiness pack.
+#
+# Cited intel-triage reasoning that refuses to fabricate. Mapped to amaru (memory
+# organ). When the evidence is insufficient to support a claim, amaru DEFERs and
+# cites what it does/does not have — it never invents a source. Λ reflects the
+# strength of the cited evidence.
+
+name: intel-triage
+title: "Cited intel-triage reasoning that refuses to fabricate (amaru)"
+warhacker_track: "HANGAR2APPS (commander visibility) / NATO Explainability & Traceability"
+
+organ: amaru
+lambda_floor: 0.10
+span_name: amaru.sync.merge
+
+image: ghcr.io/szl-holdings/amaru:uds-v0.2.0
+namespace: szl-amaru
+
+real:
+  - "amaru image published + cosign-signed on GHCR (uds-v0.2.0)"
+  - "per-organ Deployment + UDS Package CR reconciled by the UDS Operator"
+  - "cited triage → Λ-gate → DSSE rationale receipt (signed if key present)"
+  - "DEFER-on-insufficient-evidence: amaru cites sources and refuses to fabricate"
+roadmap:
+  - "inter-organ mTLS to rosie for human-on-the-loop adjudication (MESH_INTERCONNECT.md)"
+
+license: Apache-2.0
+doctrine: "v11 — Λ = Conjecture 1 (never a theorem) · SLSA L1 honest"

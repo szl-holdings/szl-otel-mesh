@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/szl-holdings/uds-mesh/blob/main/verticals/schemas/decision-request.schema.json",
+  "title": "SZL canonical decision request",
+  "description": "Canonical envelope a vertical readiness pack maps a challenge input schema INTO. One SZL organ evaluates this and returns a decision (decision.schema.json). Doctrine v11 — Lambda = Conjecture 1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["request_id", "vertical", "organ", "subject", "ts"],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Caller-supplied id, echoed on the decision."
+    },
+    "vertical": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Pack name, e.g. counter-uas / vendor-screening-889 / intel-triage."
+    },
+    "organ": {
+      "type": "string",
+      "enum": ["a11oy", "sentra", "amaru", "rosie", "killinchu"],
+      "description": "Which deployed organ evaluates the request."
+    },
+    "subject": {
+      "type": "object",
+      "description": "The thing being decided about. Vertical-specific; mapped from the challenge input schema by adapter.yaml.",
+      "minProperties": 1
+    },
+    "context": {
+      "type": "object",
+      "description": "Optional ROE / policy / evidence the organ needs to decide."
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC3339 UTC timestamp of the request."
+    }
+  }
+}

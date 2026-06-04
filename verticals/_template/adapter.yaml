@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# adapter.yaml — field-by-field mapping (TEMPLATE).
+#
+# Two directions:
+#   request:  challenge INPUT schema  → canonical SZL decision request
+#             (verticals/schemas/decision-request.schema.json)
+#   response: canonical SZL decision  → challenge OUTPUT schema
+#             (verticals/schemas/decision.schema.json)
+#
+# Mappings are declarative dotted-path pairs. `from` is a path in the challenge
+# schema; `to` is a path in the canonical envelope (or vice-versa for response).
+# Use `const:` to pin a value the organ requires (e.g. organ name).
+
+request:
+  description: "Map the challenge's input fields into the canonical decision request."
+  map:
+    - { from: "<challenge.input.id>",        to: "request_id" }
+    - { const: "<your-vertical>",            to: "vertical" }
+    - { const: "<organ>",                    to: "organ" }
+    - { from: "<challenge.input.target>",    to: "subject.<key>" }
+    - { from: "<challenge.input.policy>",    to: "context.<key>" }
+    - { from: "<challenge.input.timestamp>", to: "ts" }
+
+response:
+  description: "Map the canonical Λ-gated decision back into the challenge output."
+  map:
+    - { from: "verdict",                 to: "<challenge.output.decision>" }
+    - { from: "lambda_value",            to: "<challenge.output.score>" }
+    - { from: "governance_drift",        to: "<challenge.output.drift_flag>" }
+    - { from: "rationale",               to: "<challenge.output.reason>" }
+    # Receipt — mirror the DSSE block back into the challenge output so the
+    # caller can verify integrity. NEVER fabricate the signature.
+    - { from: "receipt.receipt_hash",    to: "<challenge.output>.szl.receipt.hash" }
+    - { from: "receipt.signature",       to: "<challenge.output>.szl.receipt.signature" }
+    - { from: "receipt.dsse_payload_type", to: "<challenge.output>.szl.receipt.payload_type" }
