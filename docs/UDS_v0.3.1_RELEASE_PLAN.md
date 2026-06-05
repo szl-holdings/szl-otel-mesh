@@ -21,7 +21,7 @@
 | Capstone signed tag | ✓ DONE | |
 | Cross-link to du-upstream-contributions#7 | ✓ DONE | vessels staging |
 | Release tag `uds-v0.3.0` | ✓ DONE | Published 2026-05-29T22:13:10Z · commit `3c87c520` |
-| Zenodo DOIs | ✓ DONE | Concept: `10.5281/zenodo.19944926` · v18: `10.5281/zenodo.20195368` |
+| Zenodo DOIs | ✓ DONE | Concept: `10.5281/zenodo.19944926` · v18 master: `10.5281/zenodo.20434276` (note: 20195368 is the v13 DOI) |
 | 335 validated UDS artifacts | ✓ DONE | 70 pytest + 265 substrate self-tests |
 | A15 persistent homology invariant | ✓ DONE | ELZ topology-preserving multi-component span schema |
 | Bundle v0.3.1 Doctrine v6 Runtime Layer | ✓ DONE | `bundles/v0.3.1/uds-bundle.yaml` (composition-runtime, scitt-adapter, policy-gate, a15-homology, xoshiro-prng, k10v2-replay) |
