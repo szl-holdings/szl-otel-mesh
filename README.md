@@ -13,6 +13,8 @@ UDS cross-component span schemas + DSSE governance receipts onto the Khipu Merkl
 [![scorecard](https://github.com/szl-holdings/uds-mesh/actions/workflows/scorecard.yml/badge.svg)](https://github.com/szl-holdings/uds-mesh/actions/workflows/scorecard.yml)
 &nbsp;Doctrine **v11 LOCKED** · 749 / 14 / 163 · SLSA L1+L2 attested · DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
 
+**Deployment story:** this repo is the **observability spine (Layer 5)**. The UDS Operator entry point is [szl-fleet-overlay](https://github.com/szl-holdings/szl-fleet-overlay); Zarf bundle manifests live in [uds-bundles](https://github.com/szl-holdings/uds-bundles); CRDT coordination is [szl-mesh](https://github.com/szl-holdings/szl-mesh); the live reference deployment is [szl-uds-deployment](https://github.com/szl-holdings/szl-uds-deployment).
+
 ---
 
 `uds-mesh` is the observability spine that lets a single governed decision be
