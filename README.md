@@ -16,25 +16,29 @@ UDS cross-component span schemas + DSSE governance receipts onto the Khipu Merkl
 ---
 
 `uds-mesh` is the observability spine that lets a single governed decision be
-followed as it crosses the five SZL organs. Every organ emits OpenTelemetry spans
-that share **one identical cross-organ envelope** (`szl.mesh.*`), so the mesh can
-reconstruct the inter-organ call graph from spans alone and bind each span to a
+followed as it crosses the five SZL backend services. Every service emits OpenTelemetry
+spans that share **one identical cross-service envelope** (`szl.mesh.*`), so the mesh can
+reconstruct the inter-service call graph from spans alone and bind each span to a
 DSSE governance receipt on the Khipu Merkle DAG.
 
-## The five organ span schemas
+## The five span schemas
 
-| Schema | Organ | Span names | Role |
+The two products — **a11oy** and **killinchu** — are composed from capability services
+(policy/gate, memory, operator). Each emits one span schema (schema filenames retain the
+original internal service identifiers):
+
+| Schema | Service | Span names | Role |
 |---|---|---|---|
-| [`a11oy.graph`](schemas/spans/a11oy.graph.yaml) | a11oy | `.lambda` · `.automorphism` · `.position` | graph-Λ tool-call spans |
-| [`sentra.gate`](schemas/spans/sentra.gate.yaml) | sentra | `.evaluate` · `.attest` · `.fail_closed` | fail-closed safety-gate spans |
-| [`amaru.sync`](schemas/spans/amaru.sync.yaml) | amaru | `.merge` · `.receipt` · `.drift_alert` | convergent data-sync spans |
+| [`a11oy.graph`](schemas/spans/a11oy.graph.yaml) | a11oy command | `.lambda` · `.automorphism` · `.position` | graph-Λ tool-call spans |
+| [`sentra.gate`](schemas/spans/sentra.gate.yaml) | a11oy — policy/gate | `.evaluate` · `.attest` · `.fail_closed` | fail-closed safety-gate spans |
+| [`amaru.sync`](schemas/spans/amaru.sync.yaml) | a11oy — memory | `.merge` · `.receipt` · `.drift_alert` | convergent data-sync spans |
 | [`killinchu.courier`](schemas/spans/killinchu.courier.yaml) | killinchu | `.dispatch` · `.deliver` · `.verify` | receipt-courier / transport spans |
-| [`rosie.decision`](schemas/spans/rosie.decision.yaml) | rosie | `.evaluate` · `.witness` · `.replay` | governed-decision witness spans |
+| [`rosie.decision`](schemas/spans/rosie.decision.yaml) | a11oy — operator | `.evaluate` · `.witness` · `.replay` | governed-decision witness spans |
 
 All five carry the same `szl.mesh.*` attributes (`organ`, `receipt_hash`,
 `dsse_payload_type`, `lambda_value`, `governance_drift`, optional `image_digest` /
 `upstream_organ`). As of **v17.2.1** (this strike) `a11oy.graph` was brought to full
-cross-organ parity — it had been the last organ on the legacy `szl.graph.*`-only
+cross-service parity — it had been the last schema on the legacy `szl.graph.*`-only
 block (and carried a YAML defect); it now also carries the unified envelope, with
 its graph-specific fields retained additively.
 
@@ -59,7 +63,7 @@ pytest mesh/conformance/ -v        # 33 passed
 ```
 L1 Substrate (lutar-lean formal proofs)   L5 Observability  →  uds-mesh  ← you are here
 L2 Formula runtime                          L6 MCP / agents  →  hatun-mcp
-L3 Organ services (a11oy/sentra/amaru/…)    L7 Operator consoles
+L3 Backend services (a11oy / killinchu)     L7 Operator consoles
 L4 Λ-gate exporters  →  vsp-otel
 ```
 
@@ -86,7 +90,7 @@ validates the receipts these spans bind to.
 The SDK's BLS aggregation runs over a prime-field additive homomorphism that
 exercises the **same algebraic identity** proved in `aggregate_verify`
 (`Σ σ_i = (Σ sk_i)·h`). Production swaps the backend for `blst`/`py_ecc` BLS12-381;
-the verify contract is identical. Runtime coordinate: `szl-holdings/amaru/szl_bls_aggregate.py`.
+the verify contract is identical. Runtime coordinate: `szl-holdings/a11oy/szl_bls_aggregate.py`.
 
 ## Layout
 
