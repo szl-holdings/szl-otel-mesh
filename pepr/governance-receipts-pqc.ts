@@ -4,8 +4,9 @@
  * SZL Holdings — PQC-upgraded governance receipt signing
  * ML-DSA-65 (FIPS 204) + HMAC-SHA-256 dual-sign transition
  *
- * STAGED-ADVISORY: v0.4.0-alpha.1
- * Doctrine v6 | DoD NSM-10 / CNSA 2.0 aligned
+ * STAGED-ADVISORY: v0.4.0-alpha.1 (PQC dual-sign promoted in v0.5.0 sprint)
+ * Doctrine v11 | DoD NSM-10 / CNSA 2.0 aligned | SLSA L1/L2 only — NEVER L3
+ * Pepr 1.0 compatible (pure node:crypto + @noble/post-quantum; no Pepr SDK coupling)
  *
  * Install: npm install @noble/post-quantum
  *
@@ -33,7 +34,7 @@ export interface GovernanceReceiptV1 {
   resource_kind: string;
   resource_name: string;
   pepr_controller_version: string;
-  slsa_level: 1 | 3;
+  slsa_level: 1 | 2; // doctrine v11: L1 honest / L2 attested only — NEVER L3
   attestation_uri?: string;
   metadata?: Record<string, unknown>;
 }
@@ -385,7 +386,7 @@ export function buildGovernanceReceipt(
   resource_kind: string,
   resource_name: string,
   pepr_version: string,
-  slsa_level: 1 | 3,
+  slsa_level: 1 | 2,
   attestation_uri?: string,
   metadata?: Record<string, unknown>
 ): GovernanceReceiptV11 {
@@ -430,7 +431,7 @@ export async function runSelfTest(): Promise<void> {
   const receipt = buildGovernanceReceipt(
     "organ-a", "0.3.1", "test-cluster", "szl-organs",
     "ADMIT", "ConfigMap", "organ-a-dataset",
-    "0.4.0", 3,
+    "0.4.0", 2,
     "https://rekor.sigstore.dev/api/v1/log/entries?logIndex=99999"
   );
   console.log(`✓ Receipt built: ${receipt.receipt_id}`);
@@ -469,10 +470,6 @@ export async function runSelfTest(): Promise<void> {
   console.log(`✓ PQC-only verify (v0.5.0 preview): ${pqcOnlyVerify}`);
 
   console.log("=== SELF-TEST PASSED ===");
-}
-
-function b64urlEncode(buf: Buffer | Uint8Array): string {
-  return Buffer.from(buf).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 if (process.argv.includes("--self-test")) {

@@ -1,7 +1,8 @@
-# Mesh interconnect — v0.4.0 roadmap (the nervous system)
+# Mesh interconnect — v0.5.0 roadmap (the nervous system)
 
 **Status:** Draft / roadmap. Nothing here is shipped.
-**Target release:** v0.4.0.
+**Target release:** v0.5.0. (v0.4.0 shipped the 5-organ bundle as five *separate* deployments — the interconnect below is the next sprint, not in v0.4.0.)
+**Mesh target:** UDS Core 1.0 uses **Istio Ambient** (sidecar-less). The acceptance criteria below were written against the legacy sidecar model; under Ambient, mTLS is enforced by the ztunnel/waypoint proxy rather than injected 2/2-container sidecars. See criterion 3 note.
 **Owner:** SZL Holdings Engineering.
 
 ## Problem statement (honest baseline)
@@ -25,29 +26,31 @@ A search for `svc.cluster.local|register|orchestrat|discovery|virtualservice|pee
 | **a11oy** | policy + receipt substrate | Orchestrator service the other organs register with and call |
 | **amaru** | memory | Stateful organ behind the substrate |
 | **sentra** | immune | Egress/tripwire organ |
-| **vessels** | deployment fabric | Structural proving ground / app surface |
+| **killinchu** | counter-UAS / drone defense | Λ-gated effector organ behind the substrate |
 
-## Acceptance criteria (v0.4.0 — derived from PhD Systems review recommendation #2)
+> Note: `vessels` (the drone *fabric*) was renamed `phawaq` and deferred to v0.4.1+; it is **not** one of the five v0.4.0 flagship organs. The five shipped organs are a11oy, sentra, amaru, rosie, killinchu.
+
+## Acceptance criteria (v0.5.0 — derived from PhD Systems review recommendation #2)
 
 > *"If a mesh is the thesis, build an actual interconnect. Stand a11oy up as a real orchestrator service, give the other four a UDS `Package` CR each (so Istio injects sidecars and mTLS is automatic), and wire service discovery via Kubernetes DNS. Add `PeerAuthentication: STRICT` and AuthorizationPolicies so module-to-module traffic is mTLS-only and authservice-gated."*
 
-A `v0.4.0` interconnect is **accepted** only when ALL of the following hold and are demonstrable on a uds-core slim-dev cluster:
+A `v0.5.0` interconnect is **accepted** only when ALL of the following hold and are demonstrable on a uds-core slim-dev cluster:
 
 1. **a11oy orchestrator service.** a11oy exposes a real orchestrator HTTP/gRPC endpoint (not a math library function). The other four modules register with it and route commands through it. rosie's console drives the mesh by calling a11oy, not by calling each module directly.
 
-2. **UDS `Package` CR per module.** Each of rosie, a11oy, amaru, sentra, vessels ships an `apiVersion: uds.dev/v1alpha1, kind: Package` CR in its `deploy/`, following the `szl-receipts` pattern (SSO/authservice selector, Istio tenant/admin expose, NetworkPolicy allow-rules, OTLP egress). `grep 'kind: Package'` across all five `deploy/` dirs must be **non-empty**. This is what triggers Istio sidecar injection.
+2. **UDS `Package` CR per module.** Each of rosie, a11oy, amaru, sentra, killinchu ships an `apiVersion: uds.dev/v1alpha1, kind: Package` CR in its `deploy/`, following the `szl-receipts` pattern (SSO/authservice selector, Istio tenant/admin expose, NetworkPolicy allow-rules, OTLP egress). `grep 'kind: Package'` across all five `deploy/` dirs must be **non-empty**. This is what enrolls each pod into the mesh.
 
-3. **Istio sidecar injection + automatic mTLS.** Every module pod runs with an injected Istio sidecar (verify: each pod has 2/2 containers). Traffic between modules is transparently mTLS-encrypted by Istio.
+3. **Mesh enrollment + automatic mTLS.** Every module pod is enrolled in the mesh and its traffic is transparently mTLS-encrypted. Under UDS Core 1.0's **Istio Ambient** model this is enforced by the ztunnel/waypoint proxy at the node/namespace level — there is **no** injected per-pod sidecar, so the legacy "2/2 containers" check does not apply. (The original criterion was written for the sidecar model; verify Ambient enrollment via `istioctl ztunnel-config workload` rather than container count.)
 
-4. **Kubernetes-DNS service discovery.** Modules resolve each other by stable DNS names, e.g. `a11oy.a11oy.svc.cluster.local`. No hard-coded IPs; no out-of-band registry. amaru/sentra/vessels resolve and reach a11oy by DNS.
+4. **Kubernetes-DNS service discovery.** Modules resolve each other by stable DNS names, e.g. `a11oy.a11oy.svc.cluster.local`. No hard-coded IPs; no out-of-band registry. amaru/sentra/killinchu resolve and reach a11oy by DNS.
 
 5. **`PeerAuthentication: STRICT`.** A `PeerAuthentication` resource (mesh-wide or per-namespace) sets `mtls.mode: STRICT`, so any non-mTLS (plaintext) module-to-module traffic is rejected. Verify by attempting a plaintext call and observing a connection reset.
 
 6. **AuthorizationPolicies (authservice-gated).** `AuthorizationPolicy` resources restrict which source identities may call which module endpoints, so module-to-module traffic is mTLS-only **and** authorization-gated (not just encrypted). Default-deny with explicit allow-rules between known principals.
 
-7. **Real cross-module traffic demonstrated.** An end-to-end path is exercised on a live cluster: rosie console → a11oy orchestrator → (amaru / sentra / vessels), with the call producing a verifiable receipt. Captured as evidence (Istio access logs / OTel trace showing the inter-pod hops over mTLS).
+7. **Real cross-module traffic demonstrated.** An end-to-end path is exercised on a live cluster: rosie console → a11oy orchestrator → (amaru / sentra / killinchu), with the call producing a verifiable receipt. Captured as evidence (Istio access logs / OTel trace showing the inter-pod hops over mTLS).
 
-## Out of scope for v0.4.0 (later)
+## Out of scope for v0.5.0 (later)
 
 - Durable receipt storage (replace the single-replica `emptyDir` with a real volume/DB).
 - Real DSSE signing (replace the checked-in HMAC demo key with cosign keyless / org KMS).
