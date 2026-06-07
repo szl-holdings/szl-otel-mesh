@@ -4,7 +4,7 @@
 # UDS-Mesh — architecture, wires, and honest gaps
 
 **Canonical home:** `szl-holdings/uds-mesh` (ADR-0001, ACCEPTED 2026-06-03).
-**Doctrine:** v11 LOCKED — 749/14/163 @ `c7c0ba17` · Λ = **Conjecture 1** (never a theorem) · SLSA L1 honest + L2 attested where `slsa-verifier` confirms · **HONESTY OVER CHECKLIST**.
+**Doctrine:** v11 LOCKED — locked kernel 749/14/163 @ `c7c0ba17` (5 proven) · experimental main 1304/22 @ `7885fd9` (~36 theorems CI-green, never folded into the locked 5) · Λ = **Conjecture 1** (never a theorem) · SLSA L1 honest + L2 attested where `slsa-verifier` confirms · **HONESTY OVER CHECKLIST**.
 
 This document describes what is actually wired in `main` today, the protocol on each
 wire, the thesis-v22 formula behind each organ, and the boundaries that are **not** yet
@@ -15,9 +15,13 @@ capability is asserted that the merged code does not exhibit.
 
 ## 1. Architecture
 
-Five organs form the mesh. `a11oy` is the policy/receipt substrate the others register
-with; `rosie` is the human-facing console; `amaru` (memory), `sentra` (immune), and
-`killinchu`/`vessels` (fabric) are the remaining organs. A cross-organ **verdict** is
+Five capabilities form the mesh. **a11oy** is the policy/receipt substrate the others register
+with; the **Operator** human-facing console (deploy id `rosie`) drives it; **Memory** (deploy id
+`amaru`), **Policy / Safety** (deploy id `sentra`), and the maritime + drone **fabric** —
+**killinchu**, which now consolidates the former standalone maritime/vessels capability (deploy
+ids `killinchu`/`vessels`) — are the remaining capabilities. (Deploy ids `amaru`/`sentra`/`rosie`
+are the published GHCR image / namespace coordinates and are retained verbatim so pulls and
+NetworkPolicies keep resolving; user-facing names are Memory / Policy / Operator.) A cross-organ **verdict** is
 gated by a Byzantine quorum, co-signed into **one** BLS12-381 aggregate signature, and
 observed through **OTLP** spans that carry a single W3C `traceparent`.
 
@@ -146,7 +150,7 @@ substrate self-test **275 tests GREEN**.
 
 *License: Apache-2.0 · © 2026 Lutar, Stephen P. — SZL Holdings*
 
-Doctrine v11 LOCKED — 749/14/163 @ `c7c0ba17` · Λ = Conjecture 1 (never a theorem) · SLSA L1+L2 · HONESTY OVER CHECKLIST
+Doctrine v11 LOCKED — locked kernel 749/14/163 @ `c7c0ba17` (5 proven) · experimental main 1304/22 @ `7885fd9` (~36 theorems CI-green, never folded into the locked 5) · Λ = Conjecture 1 (never a theorem) · SLSA L1+L2 · HONESTY OVER CHECKLIST
 
 Signed-off-by: stephenlutar2-hash <stephenlutar2-hash@users.noreply.github.com>
 Co-Authored-By: Perplexity Computer Agent <agent@perplexity.ai>
