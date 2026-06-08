@@ -11,7 +11,7 @@ UDS cross-component span schemas + DSSE governance receipts onto the Khipu Merkl
 
 [![tests](https://github.com/szl-holdings/uds-mesh/actions/workflows/tests.yml/badge.svg)](https://github.com/szl-holdings/uds-mesh/actions/workflows/tests.yml)
 [![scorecard](https://github.com/szl-holdings/uds-mesh/actions/workflows/scorecard.yml/badge.svg)](https://github.com/szl-holdings/uds-mesh/actions/workflows/scorecard.yml)
-&nbsp;Doctrine **v11 LOCKED** · 749 / 14 / 163 · SLSA L1+L2 attested · DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
+&nbsp;Doctrine **v11 LOCKED** · 749 / 14 / 163 · SLSA L1 honest · L2 verified-provenance on roadmap · DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
 
 **Deployment story:** this repo is the **observability spine (Layer 5)**. The UDS Operator entry point is [szl-fleet-overlay](https://github.com/szl-holdings/szl-fleet-overlay); Zarf bundle manifests live in [uds-bundles](https://github.com/szl-holdings/uds-bundles); CRDT coordination is [szl-mesh](https://github.com/szl-holdings/szl-mesh); the live reference deployment is [szl-uds-deployment](https://github.com/szl-holdings/szl-uds-deployment).
 
@@ -27,15 +27,17 @@ DSSE governance receipt on the Khipu Merkle DAG.
 
 The two products — **a11oy** and **killinchu** — are composed from capability services
 (policy/gate, memory, operator). Each emits one span schema (schema filenames retain the
-original internal service identifiers):
+original internal service identifiers — immutable infra coordinates kept verbatim; their
+user-facing roles are **CHAPAQ** egress immune-inspector, **YACHAY** reasoning cortex, and the
+operator console):
 
 | Schema | Service | Span names | Role |
 |---|---|---|---|
 | [`a11oy.graph`](schemas/spans/a11oy.graph.yaml) | a11oy command | `.lambda` · `.automorphism` · `.position` | graph-Λ tool-call spans |
-| [`sentra.gate`](schemas/spans/sentra.gate.yaml) | a11oy — policy/gate | `.evaluate` · `.attest` · `.fail_closed` | fail-closed safety-gate spans |
-| [`amaru.sync`](schemas/spans/amaru.sync.yaml) | a11oy — memory | `.merge` · `.receipt` · `.drift_alert` | convergent data-sync spans |
+| [`sentra.gate`](schemas/spans/sentra.gate.yaml) | a11oy — **CHAPAQ** egress immune-inspector (policy/gate) | `.evaluate` · `.attest` · `.fail_closed` | fail-closed safety-gate spans |
+| [`amaru.sync`](schemas/spans/amaru.sync.yaml) | a11oy — **YACHAY** read-only reasoning cortex (memory) | `.merge` · `.receipt` · `.drift_alert` | convergent data-sync spans |
 | [`killinchu.courier`](schemas/spans/killinchu.courier.yaml) | killinchu | `.dispatch` · `.deliver` · `.verify` | receipt-courier / transport spans |
-| [`rosie.decision`](schemas/spans/rosie.decision.yaml) | a11oy — operator | `.evaluate` · `.witness` · `.replay` | governed-decision witness spans |
+| [`rosie.decision`](schemas/spans/rosie.decision.yaml) | a11oy — operator console | `.evaluate` · `.witness` · `.replay` | governed-decision witness spans |
 
 All five carry the same `szl.mesh.*` attributes (`organ`, `receipt_hash`,
 `dsse_payload_type`, `lambda_value`, `governance_drift`, optional `image_digest` /
@@ -116,4 +118,4 @@ Co-Authored-By: Perplexity Computer Agent <agent@perplexity.ai>
 
 *Canonical-home declaration — see [`CANONICAL.md`](CANONICAL.md) and ADR-0001.*
 
-Doctrine v11 — 749/14/163 — c7c0ba17 · Λ = Conjecture 1 (never a theorem) · SLSA L1+L2 · HONESTY OVER CHECKLIST
+Doctrine v11 — 749/14/163 — c7c0ba17 · Λ = Conjecture 1 (never a theorem) · SLSA L1 honest · L2 verified-provenance on roadmap · HONESTY OVER CHECKLIST
