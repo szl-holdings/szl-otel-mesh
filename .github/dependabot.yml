@@ -1,18 +1,35 @@
 version: 2
 updates:
+  # GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+      day: "monday"
+      time: "08:00"
+      timezone: "America/New_York"
     labels:
       - "dependencies"
-      - "github-actions"
+      - "security"
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # npm / Node dependencies
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/mesh/sdk"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+      day: "monday"
+      time: "08:00"
+      timezone: "America/New_York"
     labels:
       - "dependencies"
-      - "javascript"
+      - "security"
+    open-pull-requests-limit: 10
+    groups:
+      npm-deps:
+        patterns:
+          - "*"
