@@ -6,6 +6,9 @@
 > prior "absorbed into szl-fleet-overlay / ARCHIVED" claim was inaccurate and is corrected.
 > See [`CANONICAL.md`](CANONICAL.md).
 
+
+> **Trademark / non-affiliation notice.** SZL Holdings' use of "UDS" references Defense Unicorns' Unified Defense Stack (USPTO Serial 99831122). SZL Holdings is **not affiliated with Defense Unicorns**. SZL contributions to the UDS ecosystem are made through upstream PRs. Upstream **UDS Core** (AGPL-3.0) is used as a **deployment pattern / dependency only — it is not vendored or adopted into this repository**. See https://defenseunicorns.com/uds
+
 **Layer 5 (Observability) of the SZL 7-layer architecture.**
 UDS cross-component span schemas + DSSE governance receipts onto the Khipu Merkle DAG.
 
@@ -119,3 +122,4 @@ Co-Authored-By: Perplexity Computer Agent <agent@perplexity.ai>
 *Canonical-home declaration — see [`CANONICAL.md`](CANONICAL.md) and ADR-0001.*
 
 Doctrine v11 — 749/14/163 — c7c0ba17 · Λ = Conjecture 1 (never a theorem) · SLSA L1 honest · L2 verified-provenance on roadmap · HONESTY OVER CHECKLIST
+
