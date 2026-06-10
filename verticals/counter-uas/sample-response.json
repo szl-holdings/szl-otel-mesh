@@ -1,0 +1,13 @@
+{
+  "request_id": "track-7f3a2c",
+  "verdict": "PERMIT",
+  "lambda_value": 0.87,
+  "governance_drift": false,
+  "rationale": "Hostile classification confirmed at 1200 m under defensive-counter-air ROE; Λ=0.87 above floor. Engagement permitted; killinchu emits an interdiction receipt for rosie human-on-the-loop confirm.",
+  "receipt": {
+    "receipt_hash": "65b53d92c8455db9a16ae389d489df9d364bf8ed217204610791d0c4e3d8f6df",
+    "dsse_payload_type": "application/vnd.in-toto+json",
+    "signature": "UNSIGNED-NO-KEY-CONFIGURED",
+    "key_id": null
+  }
+}

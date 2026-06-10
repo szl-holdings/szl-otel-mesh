@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# adapter.yaml — §889 vendor-screen schema  <->  canonical SZL envelope.
+#
+# Challenge input (illustrative supply-chain screen schema):
+#   { submission_id, vendor_name, cage_code, components[], submitted_at }
+# Challenge output:
+#   { screen_result, risk, drift, finding, szl: { receipt: {...} } }
+
+request:
+  description: "Map a vendor submission into the canonical decision request for sentra."
+  map:
+    - { from: "submission_id",        to: "request_id" }
+    - { const: "vendor-screening-889", to: "vertical" }
+    - { const: "sentra",              to: "organ" }
+    - { from: "vendor_name",          to: "subject.vendor_name" }
+    - { from: "cage_code",            to: "subject.cage_code" }
+    - { from: "components",           to: "context.components" }
+    - { from: "submitted_at",         to: "ts" }
+
+response:
+  description: "Map the fail-closed Λ-gated verdict back into the challenge output."
+  map:
+    - { from: "verdict",                   to: "screen_result" }   # DENY = banned
+    - { from: "lambda_value",              to: "risk" }
+    - { from: "governance_drift",          to: "drift" }
+    - { from: "rationale",                 to: "finding" }
+    - { from: "receipt.receipt_hash",      to: "szl.receipt.hash" }
+    - { from: "receipt.signature",         to: "szl.receipt.signature" }
+    - { from: "receipt.dsse_payload_type", to: "szl.receipt.payload_type" }

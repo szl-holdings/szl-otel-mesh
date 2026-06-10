@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/szl-holdings/uds-mesh/blob/main/verticals/schemas/decision.schema.json",
+  "title": "SZL canonical Lambda-gated decision + receipt",
+  "description": "Canonical verdict a vertical readiness pack maps OUT to a challenge output schema. Carries the Lambda-gate result and a DSSE receipt block. Doctrine v11 — Lambda = Conjecture 1 (never a theorem); signature is real only when a key is present, else the explicit UNSIGNED sentinel.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["request_id", "verdict", "lambda_value", "governance_drift", "receipt"],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Echoed from the decision request."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["PERMIT", "DENY", "DEFER"],
+      "description": "Lambda-gated verdict. Safety organs are fail-closed (DENY/DEFER when not positively PERMIT)."
+    },
+    "lambda_value": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Governance Lambda in [0,1]. Conjecture 1 — never a theorem."
+    },
+    "governance_drift": {
+      "type": "boolean",
+      "description": "True iff lambda_value < lambda_floor (default 0.10) or > 1.0."
+    },
+    "rationale": {
+      "type": "string",
+      "description": "Human-readable basis for the verdict; cited where the organ supports citation (amaru)."
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receipt_hash", "dsse_payload_type", "signature"],
+      "properties": {
+        "receipt_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "SHA-256 hex of the canonical PAE payload. Integrity-bound regardless of signing."
+        },
+        "dsse_payload_type": {
+          "type": "string",
+          "description": "DSSE payloadType. application/vnd.in-toto+json for mesh receipts."
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 1,
+          "description": "base64 DSSE signature when a key is present, else the literal UNSIGNED-NO-KEY-CONFIGURED sentinel. NEVER a fabricated signature."
+        },
+        "key_id": {
+          "type": ["string", "null"],
+          "description": "Signing key id (e.g. szl-receipts-ed25519) or null when unsigned."
+        }
+      }
+    }
+  }
+}

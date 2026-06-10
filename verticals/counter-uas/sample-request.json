@@ -1,0 +1,15 @@
+{
+  "request_id": "track-7f3a2c",
+  "vertical": "counter-uas",
+  "organ": "killinchu",
+  "subject": {
+    "classification": "hostile",
+    "range_m": 1200,
+    "platform": "group-1-quadcopter"
+  },
+  "context": {
+    "roe_profile": "defensive-counter-air",
+    "weapons_free": false
+  },
+  "ts": "2026-06-04T14:22:05Z"
+}

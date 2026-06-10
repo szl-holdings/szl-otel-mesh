@@ -1,0 +1,15 @@
+{
+  "request_id": "intel-q-2231",
+  "vertical": "intel-triage",
+  "organ": "amaru",
+  "subject": {
+    "question": "Is the convoy on Route Tampa carrying munitions?"
+  },
+  "context": {
+    "reports": [
+      {"id": "SIGINT-118", "summary": "vehicle movement detected, contents unknown"},
+      {"id": "HUMINT-44", "summary": "unconfirmed source mentions 'cargo', no specifics"}
+    ]
+  },
+  "ts": "2026-06-04T11:48:30Z"
+}

@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# pack.yaml — vertical readiness pack manifest (TEMPLATE).
+# Copy verticals/_template/ → verticals/<your-vertical>/ and fill every <...>.
+#
+# This file names WHICH organ answers the challenge, the Λ-floor that gates its
+# verdict, and the deploy coordinates of the (already-published) organ image.
+# It does NOT define new application code — the organ already ships in
+# szl-mesh:v0.4.0.
+
+# Pack identity ----------------------------------------------------------------
+name: <your-vertical>            # kebab-case, matches the directory name
+title: <Human-readable pack title>
+warhacker_track: <published track this maps to, e.g. Cannonico / Tychee>
+
+# Organ + Λ-gate ---------------------------------------------------------------
+# Pick the organ whose job matches the challenge (see verticals/README.md §4):
+#   sentra    → deny/screen against a policy/denylist (fail-closed)
+#   killinchu → evaluate an engagement / edge interdiction (Λ-gate)
+#   amaru     → cited triage/reasoning that refuses to fabricate
+#   rosie     → human-on-the-loop confirm/authorize with witnesses
+#   a11oy     → governance / receipt-substrate decision (source of truth)
+organ: <a11oy | sentra | amaru | rosie | killinchu>
+lambda_floor: 0.10               # governance_drift = lambda < floor (or > 1.0)
+
+# OTEL span this pack's decisions emit (must exist under schemas/spans/) -------
+span_name: <organ>.<verb>        # e.g. killinchu.courier.engage
+
+# Deploy coordinates (the "wire") ----------------------------------------------
+image: ghcr.io/szl-holdings/<organ>:uds-v0.2.0   # published, cosign-signed
+namespace: szl-<organ>           # UDS namespace the Package CR targets
+
+# Honesty flags — state plainly what is real vs roadmap for THIS pack ----------
+real:
+  - "per-organ Deployment + UDS Package CR applied by the UDS Operator"
+  - "decision → Λ-gate → DSSE receipt (signed if a key is present, else UNSIGNED)"
+roadmap:
+  - "inter-organ Istio mTLS / PeerAuthentication (see docs/roadmap/MESH_INTERCONNECT.md)"
+
+# SPDX / provenance ------------------------------------------------------------
+license: Apache-2.0
+doctrine: "v11 — Λ = Conjecture 1 (never a theorem) · SLSA L1 honest"

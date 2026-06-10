@@ -1,0 +1,13 @@
+{
+  "request_id": "intel-q-2231",
+  "verdict": "DEFER",
+  "lambda_value": 0.34,
+  "governance_drift": false,
+  "rationale": "Evidence insufficient to assess munitions. SIGINT-118 confirms movement only; HUMINT-44 is an unconfirmed source mentioning unspecified 'cargo'. amaru refuses to fabricate a munitions finding from these — DEFER pending corroboration. Citations: [SIGINT-118, HUMINT-44].",
+  "receipt": {
+    "receipt_hash": "3259baedc0bfd6da5c4c704b24d9387c48d245be5849d693c0dcbfab9351808f",
+    "dsse_payload_type": "application/vnd.in-toto+json",
+    "signature": "UNSIGNED-NO-KEY-CONFIGURED",
+    "key_id": null
+  }
+}

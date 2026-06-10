@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# pack.yaml — counter-UAS engagement readiness pack.
+#
+# A hostile-track engagement decision is mapped to the killinchu organ (edge /
+# courier-dispatch), Λ-gated, and bound into a signed interdiction receipt.
+
+name: counter-uas
+title: "Λ-gated counter-UAS engagement on a hostile track"
+warhacker_track: "Cannonico (AI oversight for autonomous drones) / raven tactical (AI at the edge)"
+
+organ: killinchu
+lambda_floor: 0.10
+span_name: killinchu.courier.dispatch
+
+image: ghcr.io/szl-holdings/killinchu:uds-v0.2.0
+namespace: szl-killinchu
+
+real:
+  - "killinchu image published + cosign-signed on GHCR (uds-v0.2.0)"
+  - "per-organ Deployment + UDS Package CR reconciled by the UDS Operator"
+  - "engagement decision → Λ-gate → DSSE interdiction receipt (signed if key present)"
+roadmap:
+  - "inter-organ mTLS to rosie for human-on-the-loop confirm (MESH_INTERCONNECT.md)"
+
+license: Apache-2.0
+doctrine: "v11 — Λ = Conjecture 1 (never a theorem) · SLSA L1 honest"

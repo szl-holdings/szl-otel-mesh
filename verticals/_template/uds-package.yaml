@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: Apache-2.0
+# © 2026 Lutar, Stephen P. — SZL Holdings · ORCID 0009-0001-0110-4173
+#
+# uds-package.yaml — the "wire" (TEMPLATE).
+#
+# REAL today: this is the UDS `Package` CR + Deployment that the UDS Operator
+# (Pepr, in UDS Core) reconciles to bring ONE organ online with SSO, an Istio
+# sidecar, monitored metrics, and a scoped NetworkPolicy. Applied with:
+#     kubectl apply -f verticals/<your-vertical>/uds-package.yaml
+#
+# ROADMAP (NOT applied here): inter-organ STRICT mTLS / PeerAuthentication /
+# AuthorizationPolicy. Those manifests live in manifests/istio/ and are
+# offline-validated only. See docs/roadmap/MESH_INTERCONNECT.md (criteria 1-7).
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: szl-<organ>
+  labels:
+    istio-injection: enabled          # UDS Operator injects the sidecar here
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <organ>
+  namespace: szl-<organ>
+  labels:
+    app.kubernetes.io/name: <organ>
+    app.kubernetes.io/part-of: szl-mesh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: <organ>
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: <organ>
+    spec:
+      containers:
+        - name: <organ>
+          image: ghcr.io/szl-holdings/<organ>:uds-v0.2.0   # cosign-signed
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            # When a signing key is mounted the receipt is signed; otherwise the
+            # organ emits the explicit UNSIGNED-NO-KEY-CONFIGURED sentinel.
+            - name: SZL_COSIGN_PRIVATE_PEM
+              valueFrom:
+                secretKeyRef:
+                  name: szl-receipts-signing
+                  key: cosign.key
+                  optional: true
+---
+# UDS Package CR — reconciled by the UDS Operator. Triggers Istio sidecar
+# injection, registers an SSO client, exposes the service, and scrapes metrics.
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: szl-<organ>
+  namespace: szl-<organ>
+spec:
+  network:
+    expose:
+      - service: <organ>
+        selector:
+          app.kubernetes.io/name: <organ>
+        host: <organ>
+        gateway: tenant
+        port: 8080
+        targetPort: 8080
+    allow:
+      # Egress to the DSSE receipt sink (szl-receipts), port 8080.
+      - direction: Egress
+        selector:
+          app.kubernetes.io/name: <organ>
+        remoteNamespace: szl-receipts
+        remoteSelector:
+          app.kubernetes.io/name: szl-receipts
+        port: 8080
+        description: "DSSE receipt egress"
+  sso:
+    - name: SZL <organ>
+      clientId: uds-szl-<organ>
+      redirectUris:
+        - "https://<organ>.uds.dev/login/generic_oauth"
+  monitor:
+    - selector:
+        app.kubernetes.io/name: <organ>
+      portName: http
+      targetPort: 8080
+      description: "<organ> metrics"

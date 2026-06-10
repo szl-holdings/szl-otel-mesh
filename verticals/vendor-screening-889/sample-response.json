@@ -1,0 +1,13 @@
+{
+  "request_id": "vendor-req-0481",
+  "verdict": "DENY",
+  "lambda_value": 0.95,
+  "governance_drift": false,
+  "rationale": "Vendor 'Hikvision' is a Section-889(a)(1)(B) covered entity (1 of the 5 named: Huawei, ZTE, Hytera, Hikvision, Dahua). Deny-by-default screen: DENY. sentra is fail-closed and never PERMITs a covered entity.",
+  "receipt": {
+    "receipt_hash": "d26fd066367737a1d4aea5f1cc78d15b18c12490fe571576dd4cc6ad1eaf83b2",
+    "dsse_payload_type": "application/vnd.in-toto+json",
+    "signature": "UNSIGNED-NO-KEY-CONFIGURED",
+    "key_id": null
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "request_id": "REPLACE-with-caller-id",
+  "verdict": "DENY",
+  "lambda_value": 0.42,
+  "governance_drift": false,
+  "rationale": "REPLACE with the organ's human-readable basis for the verdict.",
+  "receipt": {
+    "receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "dsse_payload_type": "application/vnd.in-toto+json",
+    "signature": "UNSIGNED-NO-KEY-CONFIGURED",
+    "key_id": null
+  }
+}

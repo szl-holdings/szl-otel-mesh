@@ -1,0 +1,12 @@
+{
+  "request_id": "REPLACE-with-caller-id",
+  "vertical": "your-vertical",
+  "organ": "sentra",
+  "subject": {
+    "REPLACE": "the thing being decided about — at least one property"
+  },
+  "context": {
+    "REPLACE": "optional ROE / policy / evidence the organ needs"
+  },
+  "ts": "2026-06-04T00:00:00Z"
+}
