@@ -5,9 +5,14 @@ name: Release Please
 # Fixed: release-type changed from "node" to "simple" — uds-mesh has no package.json
 # Fixed: removed deprecated package-name input (release-please-action v5)
 
+# DISABLED on push (2026-06-12): release-please MUST create a release PR, but the
+# enterprise currently disables "Allow GitHub Actions to create or approve pull
+# requests" (Settings -> Actions -> General, enterprise-enforced). With that off,
+# every push run fails with "GitHub Actions is not permitted to create or approve
+# pull requests". Gated to manual dispatch so it stops failing on every push;
+# re-enable the push trigger once the enterprise allows Actions PR creation.
 on:
-  push:
-    branches: [main]
+  workflow_dispatch: {}
 
 permissions:
   contents: read
