@@ -41,8 +41,16 @@ operator console):
 | [`amaru.sync`](schemas/spans/amaru.sync.yaml) | a11oy — **YACHAY** read-only reasoning cortex (memory) | `.merge` · `.receipt` · `.drift_alert` | convergent data-sync spans |
 | [`killinchu.courier`](schemas/spans/killinchu.courier.yaml) | killinchu | `.dispatch` · `.deliver` · `.verify` | receipt-courier / transport spans |
 | [`rosie.decision`](schemas/spans/rosie.decision.yaml) | a11oy — operator console | `.evaluate` · `.witness` · `.replay` | governed-decision witness spans |
+| [`sda.detection`](schemas/spans/sda.detection.yaml) | killinchu SDA (`khipu-sda-core`) | `.dtid` · `.characterize` · `.twa` · `.fuse` | clean-room anomaly / Threat-Warning spans (advisory Λ, Conjecture 1) |
 
-All five carry the same `szl.mesh.*` attributes (`organ`, `receipt_hash`,
+The sixth schema, **`sda.detection`** (v18.0), was added with the clean-room anomaly/SDA
+capability (`szl-sda` / killinchu SDA — inspired by True Anomaly's Mosaic, capability only,
+no proprietary code). Each anomaly/threat detection emits one signed span — through the
+Mosaic-derived stages DTID → CHARACTERIZE → TWA → FUSE — bound to the Khipu Merkle DAG.
+The anomaly score feeds the killinchu 13-axis Λ-gate as the advisory `anomaly_twa` axis
+(Λ = Conjecture 1, never a theorem); confidence is a bounded conformal **ESTIMATE**.
+
+All six carry the same `szl.mesh.*` attributes (`organ`, `receipt_hash`,
 `dsse_payload_type`, `lambda_value`, `governance_drift`, optional `image_digest` /
 `upstream_organ`). As of **v17.2.1** (this strike) `a11oy.graph` was brought to full
 cross-service parity — it had been the last schema on the legacy `szl.graph.*`-only

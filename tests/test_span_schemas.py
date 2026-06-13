@@ -143,3 +143,65 @@ class TestExamples:
 
     def test_github_url_present(self, schema_text):
         assert 'github.com/szl-holdings' in schema_text
+
+
+# ─── SDA detection schema tests (szl-sda / killinchu SDA, Mosaic-derived) ─────
+# The sixth mesh organ: sda.detection.* spans emitted by the szl-sda anomaly
+# capability (Dev1 szl_mosaic engine, Dev2 killinchu wiring). Uses the shared
+# cross-organ szl.mesh.* DSSE receipt attributes like the other 4 non-a11oy organs.
+
+SDA_SCHEMA_FILE = os.path.join(os.path.dirname(__file__), '..', 'schemas', 'spans', 'sda.detection.yaml')
+
+
+@pytest.fixture(scope='module')
+def sda_schema_text():
+    with open(SDA_SCHEMA_FILE) as f:
+        return f.read()
+
+
+class TestSdaSchemaFile:
+    def test_sda_schema_file_exists(self):
+        assert os.path.isfile(SDA_SCHEMA_FILE), f"Schema file not found: {SDA_SCHEMA_FILE}"
+
+    def test_sda_schema_file_nonempty(self):
+        assert os.path.getsize(SDA_SCHEMA_FILE) > 500
+
+    def test_sda_schema_has_version_field(self, sda_schema_text):
+        assert 'version:' in sda_schema_text
+
+    def test_sda_organ_is_sda(self, sda_schema_text):
+        assert 'organ: sda' in sda_schema_text
+
+
+class TestSdaSpanNames:
+    def test_sda_span_dtid_defined(self, sda_schema_text):
+        assert 'sda.detection.dtid' in sda_schema_text
+
+    def test_sda_span_characterize_defined(self, sda_schema_text):
+        assert 'sda.detection.characterize' in sda_schema_text
+
+    def test_sda_span_twa_defined(self, sda_schema_text):
+        assert 'sda.detection.twa' in sda_schema_text
+
+    def test_sda_span_fuse_defined(self, sda_schema_text):
+        assert 'sda.detection.fuse' in sda_schema_text
+
+    def test_sda_all_four_spans_present(self, sda_schema_text):
+        spans = ['sda.detection.dtid', 'sda.detection.characterize',
+                 'sda.detection.twa', 'sda.detection.fuse']
+        for span in spans:
+            assert span in sda_schema_text, f"Span '{span}' not defined in SDA schema"
+
+
+class TestSdaSharedMeshAttributes:
+    def test_sda_mesh_organ_attr(self, sda_schema_text):
+        assert 'szl.mesh.organ' in sda_schema_text
+
+    def test_sda_mesh_receipt_hash_attr(self, sda_schema_text):
+        assert 'szl.mesh.receipt_hash' in sda_schema_text
+
+    def test_sda_mesh_image_digest_attr(self, sda_schema_text):
+        assert 'szl.mesh.image_digest' in sda_schema_text
+
+    def test_sda_mesh_lambda_value_attr(self, sda_schema_text):
+        assert 'szl.mesh.lambda_value' in sda_schema_text
