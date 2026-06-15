@@ -182,7 +182,8 @@ common_fields:
       description: |
         SHA-256 hex digest of the canonical receipt for this graph execution.
         Binds the span to the SLSA provenance chain in extended-attestations.jsonl.
-      example: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1"
+        Exactly 64 lower-case hex chars (matches the cross-organ szl.mesh.receipt_hash).
+      example: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1a"
 
     - name: szl.graph.governance_drift
       type: boolean
@@ -445,7 +446,7 @@ examples:
         szl.graph.lambda_value: "0.813472"
         szl.graph.v_count: 12
         szl.graph.e_count: 18
-        szl.graph.receipt_hash: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1"
+        szl.graph.receipt_hash: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1a"
         szl.graph.governance_drift: false
         szl.graph.computation_mode: "geometric_mean"
 
@@ -462,7 +463,7 @@ examples:
         szl.graph.lambda_value: "0.813472"
         szl.graph.v_count: 12
         szl.graph.e_count: 18
-        szl.graph.receipt_hash: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1"
+        szl.graph.receipt_hash: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1a"
         szl.graph.governance_drift: false
         szl.graph.automorphism_orbit_size: 6
         szl.graph.cache_hit: true
@@ -480,7 +481,7 @@ examples:
         szl.graph.lambda_value: "0.813472"
         szl.graph.v_count: 12
         szl.graph.e_count: 18
-        szl.graph.receipt_hash: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1"
+        szl.graph.receipt_hash: "a3f2e1d4b8c7094f6e5d2c1b0a9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1a"
         szl.graph.governance_drift: false
         szl.graph.anchor_count: 4
         szl.graph.hop_radius: 2
@@ -499,7 +500,7 @@ examples:
         szl.graph.lambda_value: "0.761234"
         szl.graph.v_count: 12
         szl.graph.e_count: 19
-        szl.graph.receipt_hash: "b4e3f2c1d0e9f8g7h6i5j4k3l2m1n0o9p8q7r6s5t4u3v2w1x0y9z8a7b6c5d4e3"
+        szl.graph.receipt_hash: "b4e3f2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3"
         szl.graph.governance_drift: false
         szl.graph.proposed_edge_src: 3
         szl.graph.proposed_edge_dst: 7
