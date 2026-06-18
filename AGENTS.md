@@ -2,17 +2,28 @@
 
 ## Cursor Cloud specific instructions
 
-This is a **specification/manifest repository** (no application source code). It contains OTEL span schemas, UDS bundle manifests, governance receipts, and pointer manifests.
+This is the **canonical home of the UDS mesh** (ADR-0001). It contains the mesh
+Python runtime (`mesh/`, `src/mesh/`), OTEL span schemas, deploy manifests
+(`manifests/` — Istio mTLS, OTLP collector, NetworkPolicies), governance receipts,
+UDS bundle manifests, and pointer manifests.
 
 ### Testing
 
-The only automated test is:
+Primary suite — the real pytest tests under `tests/` plus the substrate self-test:
 
 ```sh
-bash schemas/spans/test_graph_spans.sh
+python -m pytest -q                 # 270 passed, 1 skipped
+python3 uds_v18_24_substrate.py     # OK 275 tests (178 doctests + 97 assertions)
 ```
 
-This validates the `schemas/spans/a11oy.graph.yaml` OTEL span schema (25 checks). Must be run from the repo root.
+Span-schema shell checks (also run by CI):
+
+```sh
+bash schemas/spans/test_graph_spans.sh   # a11oy.graph.* schema — 25 checks
+bash schemas/spans/test_mesh_spans.sh    # 5 cross-organ span schemas — 65 checks
+```
+
+All must be run from the repo root.
 
 ### Linting
 
@@ -32,6 +43,9 @@ The CI workflow (`.github/workflows/ci.yml`) validates:
 3. `uds-bundle.yaml` manifest is present
 4. Schema test passes (`bash schemas/spans/test_graph_spans.sh`)
 
-### No build/run step
+### Build/run
 
-There is no application to build or run. The repo is purely declarative schemas and manifests.
+The mesh runtime is importable Python (`mesh/`, `src/mesh/`) plus declarative
+schemas and manifests; there is no long-running service to start. The TypeScript
+mesh SDK under `mesh/sdk/` builds with `npm --prefix mesh/sdk run build`. Deploy
+procedure and tested rollback for the `manifests/` surface: `docs/MESH_RUNBOOK.md`.

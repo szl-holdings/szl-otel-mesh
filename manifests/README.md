@@ -10,7 +10,8 @@ UDS Mesh, ACCEPTED 2026-06-03).
 |------|---------|
 | `istio/peer-authentication.yaml` | `PeerAuthentication` **STRICT** mTLS, one per organ namespace (a11oy, sentra, amaru, killinchu, rosie) |
 | `istio/destination-rule.yaml` | `DestinationRule` pinning **ISTIO_MUTUAL** TLS to the mesh OTLP collector and organ services |
-| `otel/collector.yaml` | OpenTelemetry Collector: **OTLP gRPC receiver (4317)** + HTTP (4318) → `memory_limiter`/`batch` → **OTLP exporter pipeline** forwarding to the vsp-otel Λ-gate verifier |
+| `netpol/network-policies.yaml` | `NetworkPolicy` **default-deny** (ingress+egress) for the `szl-mesh` namespace + explicit allows: organ→collector OTLP (4317/4318), collector→vsp-otel (4318), DNS (53). L3/L4 complement to the Istio mTLS identity layer |
+| `otel/collector.yaml` | OpenTelemetry Collector: **OTLP gRPC receiver (4317)** + HTTP (4318) → `memory_limiter`/`batch` → **OTLP exporter pipeline** forwarding to the vsp-otel Λ-gate verifier. Hardened: image **digest-pinned**, **non-root** `securityContext` (`readOnlyRootFilesystem`, `drop: [ALL]`, `seccomp: RuntimeDefault`), liveness/readiness probes on the `health_check` extension (:13133), resource requests+limits |
 
 ## HONESTY OVER CHECKLIST
 
@@ -24,11 +25,12 @@ UDS Mesh, ACCEPTED 2026-06-03).
 
 ## Offline validation
 
-Native k8s objects (the collector) validate against the bundled schema:
+Native k8s objects (the collector + the NetworkPolicies) validate against the
+bundled schema:
 
 ```bash
-kubeconform -strict -summary manifests/otel/collector.yaml
-# Summary: 3 resources found - Valid: 3, Invalid: 0
+kubeconform -strict -summary manifests/otel/collector.yaml manifests/netpol/network-policies.yaml
+# Summary: 7 resources found - Valid: 7, Invalid: 0
 ```
 
 Istio CRs need the Istio CRD schemas (not bundled in kubeconform by default):
@@ -46,7 +48,21 @@ kubectl apply --dry-run=client -f manifests/istio/ -f manifests/otel/
 
 CI runs `pytest tests/test_manifests.py`, which asserts the YAML parses and carries
 the security invariants (STRICT mTLS on all 5 organs, ISTIO_MUTUAL, OTLP gRPC
-receiver, forwarding exporter pipeline) without needing a cluster.
+receiver, forwarding exporter pipeline, NetworkPolicy default-deny + explicit
+allows, collector digest-pin + non-root securityContext + probes) without needing
+a cluster.
+
+## NetworkPolicy vs. Istio mTLS — why both
+
+`PeerAuthentication: STRICT` authenticates **identity** (a caller must present a
+valid SPIFFE mTLS cert). `NetworkPolicy` constrains **reachability** at L3/L4 (which
+pods can open a socket at all). They are independent layers: mTLS does not stop a
+compromised in-mesh pod from reaching the collector's port, and a NetworkPolicy
+does not verify identity. The `netpol/` default-deny + explicit allows give the
+mesh namespace a real deny-by-default posture underneath the Istio identity layer.
+**HONESTY:** these NetworkPolicies are offline-validated only; enforcement requires
+a CNI that implements NetworkPolicy (Calico/Cilium) on a live cluster — not run in
+CI. See `docs/MESH.md` §4.
 
 ---
 
