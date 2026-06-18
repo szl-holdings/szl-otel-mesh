@@ -82,6 +82,7 @@ names it and proceeds on the 4 honest organs.
 | **Receipts** | quorum / bridge | **DSSE** envelope (PAE), payload types `application/vnd.szl.mesh-quorum-receipt+json`, `…mesh-otlp-batch-receipt+json`; cosign keyid `szlholdings-cosign` | `pinn_dsse.sign_payload` / `verify_envelope` | **LIVE bytes; SIGNED only when cosign key present, else explicit `UNSIGNED` marker** |
 | **Cross-organ co-signature** | 4 honest organs → verifier | **BLS12-381 aggregate** (G2ProofOfPossession ciphersuite, IETF CFRG draft) via `py_ecc.bls`; `Aggregate` + `FastAggregateVerify` — ONE signature replaces N pairings | `mesh.formulas.bls_aggregate.cosign_chain` / `verify_aggregate` | **LIVE (real pairing crypto)** |
 | **Pod-to-pod transport** | organ ↔ organ ↔ collector | **Istio STRICT mTLS** (`PeerAuthentication`) + `ISTIO_MUTUAL` (`DestinationRule`); OTLP gRPC :4317 / HTTP :4318 receiver → `memory_limiter`/`batch` → OTLP exporter | `manifests/istio/*.yaml`, `manifests/otel/collector.yaml` | **DECLARED + offline-validated; NOT deployed to a live cluster** |
+| **L3/L4 reachability** | szl-mesh namespace | **`NetworkPolicy` default-deny** (ingress+egress) + explicit allows (organ→collector 4317/4318, collector→vsp-otel 4318, DNS 53) — deny-by-default complement to the mTLS identity layer | `manifests/netpol/network-policies.yaml` | **DECLARED + offline-validated; enforcement needs a NetworkPolicy-capable CNI on a live cluster** |
 
 ---
 
@@ -121,6 +122,13 @@ and were verified to resolve at those commits.
   mesh enrollment runs in CI. Per `docs/roadmap/MESH_INTERCONNECT.md`, the real
   interconnect (a11oy orchestrator service, per-module UDS `Package` CRs, Istio Ambient
   enrollment, AuthorizationPolicies) is a **v0.5.0 roadmap item — not shipped.**
+- **NetworkPolicies are declared, not enforced.** `manifests/netpol/network-policies.yaml`
+  gives the `szl-mesh` namespace a default-deny (ingress+egress) posture with explicit
+  allow-rules (organ→collector OTLP, collector→vsp-otel, DNS). They parse and validate
+  offline, but **NetworkPolicy is only enforced by a CNI that implements it
+  (Calico/Cilium)** — no such cluster runs in CI, so this is a declared L3/L4 posture,
+  not a demonstrated one. Per-organ-namespace default-deny is provided by uds-core +
+  the per-module UDS `Package` CRs (MESH_INTERCONNECT.md criterion 6, roadmap).
 - **DSSE receipts are UNSIGNED in keyless runtimes.** When `SZL_COSIGN_PRIVATE_PEM`
   is absent, `pinn_dsse` returns an explicit `UNSIGNED` marker — receipt bytes and the
   PAE hash are still integrity-bound and verify once the key is provided, but **no

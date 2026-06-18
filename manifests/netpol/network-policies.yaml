@@ -1,0 +1,109 @@
+# WU-2 hardening (uds-mesh) — Kubernetes NetworkPolicies for the szl-mesh
+# namespace: default-deny (ingress + egress) plus the explicit allow-rules the
+# OTLP collector actually needs. These are a defense-in-depth complement to the
+# Istio STRICT mTLS PeerAuthentication (manifests/istio/) — mTLS authenticates
+# pod identity; NetworkPolicy constrains L3/L4 reachability. Both are needed for
+# a real default-deny posture.
+#
+# ADR-0001: canonical home szl-holdings/uds-mesh. HONESTY: validated OFFLINE only
+# (kubeconform / `kubectl apply --dry-run=client`); no live cluster or CNI that
+# enforces NetworkPolicy is contacted in CI. Like the Istio manifests these are
+# DECLARED + offline-validated, NOT deployed to a production cluster — see
+# docs/MESH.md §4 and docs/roadmap/MESH_INTERCONNECT.md (criterion 6).
+# Doctrine v11 — 749/14/163 — c7c0ba17.
+#
+# Scope note: these policies govern the szl-mesh namespace (where the mesh OTLP
+# collector runs). Per-organ namespaces (szl-a11oy, szl-sentra, szl-amaru,
+# szl-killinchu, szl-rosie) inherit uds-core's own default-deny + their UDS
+# Package CR allow-rules; wiring those per-organ Package CRs is the v0.5.0
+# roadmap item (MESH_INTERCONNECT.md criterion 2), not shipped here.
+---
+# 1. Default-deny ALL ingress and egress in the szl-mesh namespace.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: szl-mesh
+  labels:
+    app.kubernetes.io/part-of: uds-mesh
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+# 2. Allow OTLP ingress to the collector from any mesh organ namespace.
+# Organ namespaces must carry the label szl.mesh/organ-namespace=true so the
+# selector resolves; uds-core/UDS Package CRs apply this label on enrollment.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-otlp-ingress-to-collector
+  namespace: szl-mesh
+  labels:
+    app.kubernetes.io/part-of: uds-mesh
+spec:
+  podSelector:
+    matchLabels:
+      app: mesh-otlp-collector
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              szl.mesh/organ-namespace: "true"
+        # Also allow same-namespace callers (e.g. in-namespace bridge sidecars).
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 4317
+        - protocol: TCP
+          port: 4318
+---
+# 3. Allow the collector to forward OTLP/HTTP to the vsp-otel Λ-gate verifier
+# (vsp-otel-collector.szl-mesh.svc:4318) within the namespace.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-collector-egress-to-vsp-otel
+  namespace: szl-mesh
+  labels:
+    app.kubernetes.io/part-of: uds-mesh
+spec:
+  podSelector:
+    matchLabels:
+      app: mesh-otlp-collector
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: vsp-otel-collector
+      ports:
+        - protocol: TCP
+          port: 4318
+---
+# 4. Allow DNS resolution (kube-dns / CoreDNS) egress for all mesh pods, so the
+# collector can resolve vsp-otel-collector.szl-mesh.svc.cluster.local. Without
+# this, the default-deny egress above would block name resolution.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: szl-mesh
+  labels:
+    app.kubernetes.io/part-of: uds-mesh
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
