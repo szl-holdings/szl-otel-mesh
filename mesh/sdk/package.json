@@ -12,5 +12,5 @@
     "test": "node --test"
   },
   "engines": { "node": ">=18" },
-  "devDependencies": { "@types/node": "^25", "typescript": "^6.0" }
+  "devDependencies": { "@types/node": "^26", "typescript": "^6.0" }
 }
