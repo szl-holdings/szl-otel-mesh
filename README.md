@@ -1,4 +1,7 @@
-# uds-mesh
+# szl-otel-mesh
+
+> **Renamed 2026-06-28:** This repository was renamed from `uds-mesh` to `szl-otel-mesh` for naming clarity — OTel observability scope vs. CRDT mesh coordination in [`szl-mesh`](https://github.com/szl-holdings/szl-mesh). GitHub redirects old URLs automatically; update any bookmarks.
+
 
 > **CANONICAL HOME.** This repository is the single canonical home of the UDS mesh
 > per **[ADR-0001](CANONICAL.md)** (ACCEPTED 2026-06-03). A non-canonical fold-copy at
@@ -12,8 +15,8 @@
 **Layer 5 (Observability) of the SZL 7-layer architecture.**
 UDS cross-component span schemas + DSSE governance receipts onto the Khipu Merkle DAG.
 
-[![tests](https://github.com/szl-holdings/uds-mesh/actions/workflows/tests.yml/badge.svg)](https://github.com/szl-holdings/uds-mesh/actions/workflows/tests.yml)
-[![scorecard](https://github.com/szl-holdings/uds-mesh/actions/workflows/scorecard.yml/badge.svg)](https://github.com/szl-holdings/uds-mesh/actions/workflows/scorecard.yml)
+[![tests](https://github.com/szl-holdings/szl-otel-mesh/actions/workflows/tests.yml/badge.svg)](https://github.com/szl-holdings/szl-otel-mesh/actions/workflows/tests.yml)
+[![scorecard](https://github.com/szl-holdings/szl-otel-mesh/actions/workflows/scorecard.yml/badge.svg)](https://github.com/szl-holdings/szl-otel-mesh/actions/workflows/scorecard.yml)
 &nbsp;Doctrine **v11 LOCKED** · 749 / 14 / 163 · SLSA L1 honest · L2 verified-provenance on roadmap · DOI [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
 
 **Deployment story:** this repo is the **observability spine (Layer 5)**. The UDS Operator entry point is [szl-fleet-overlay](https://github.com/szl-holdings/szl-fleet-overlay); Zarf bundle manifests live in [uds-bundles](https://github.com/szl-holdings/uds-bundles); CRDT coordination is [szl-mesh](https://github.com/szl-holdings/szl-mesh); the live reference deployment is [szl-uds-deployment](https://github.com/szl-holdings/szl-uds-deployment).
